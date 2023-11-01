@@ -1,43 +1,80 @@
 'use strict';
 
-const TITLE_OFFER =
-  [
-    'Hotel',
-    'Hostel',
-    'Apartment',
-    'Houseroom',
-    'Motel',
-    'B&B-hotel',
-    'Apart-hotel',
-    'Capsule hotel',
-    'Guest-house',
-    'Bed and Breakfast'
-  ];
-const FEATURES_OFFER =
-  [
-    'wifi',
-    'dishwasher',
-    'parking',
-    'washer',
-    'elevator',
-    'conditioner'
-  ];
-const TYPE_HOUSING_OFFER =
-  [
-    'palace',
-    'flat',
-    'house',
-    'bungalow'
-  ];
-const PHOTOS_OFFER =
-  [
-    'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-    'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-    'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-  ];
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
+const TITLES_OFFER = [
+  'Hotel',
+  'Hostel',
+  'Apartment',
+  'Houseroom',
+  'Motel',
+  'B&B-hotel',
+  'Apart-hotel',
+  'Capsule hotel',
+  'Guest-house',
+  'Bed and Breakfast',
+];
+const DESCRIPTIONS_OFFER = [
+  'A luxurious five-star hotel with a sea view, the perfect place for a romantic getaway.',
+  'A modern boutique hotel in the city center with a unique design and high-level service.',
+  'A cozy family hotel with a pool and a playground, perfect for family vacations.',
+  'An exclusive spa resort offering a wide range of treatments and services for relaxation and rejuvenation.',
+  'A hotel with a traditional atmosphere and superb cuisine, offering guests a real taste of local culture.',
+  'An economical option with comfortable rooms and a convenient location close to major attractions.',
+  'A hotel for active leisure enthusiasts with access to water sports and mountain skiing.',
+  'An eco-hotel surrounded by nature, providing an opportunity to experience an environmentally friendly lifestyle.',
+  'A historic hotel in a heritage building with original decor and antique furniture.',
+  'A specialized hotel for business travelers with modern conference rooms and business services.',
+];
+const FEATURES_OFFER = [
+  'wifi',
+  'dishwasher',
+  'parking',
+  'washer',
+  'elevator',
+  'conditioner',
+];
+const TYPES_HOUSING_OFFER = [
+  'palace',
+  'flat',
+  'house',
+  'bungalow',
+];
+const PHOTOS_OFFER = [
+  'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
+];
+const TIME_CHECK_IN_OUT = [
+  '12:00',
+  '13:00',
+  '14:00',
+];
 
-const getRandomInclusive = (min, max, numberType = 'int', decimals = 5) => {
+const LatitudeX = {
+  MIN: 35.65000,
+  MAX: 35.70000,
+  DECIMAL: 5,
+};
+const LongitudeY = {
+  MIN: 139.70000,
+  MAX: 139.80000,
+  DECIMAL: 5,
+};
+const Price = {
+  MIN: 10000,
+  MAX: 300000,
+};
+const NumberRooms = {
+  MIN: 1,
+  MAX: 6,
+};
+const NumberGuests = {
+  MIN: 1,
+  MAX: 5,
+};
+
+
+const getRandomInclusive = (min, max, numberType = 'int', decimals = LatitudeX.DECIMAL) => {
   if (min < 0 || max < 0) {
     return -1;
   }
@@ -79,57 +116,29 @@ const shuffleArray = (array) => {
 };
 
 const getOrderNumbersArray = (length) => {
-  let arr = new Array(length).fill(null);
+  let arr = [];
 
   for (let i = 0; i < length; i++) {
-    arr[i] = i + 1;
+    arr.push(i + 1);
   }
 
   return arr;
 };
 
-const getUniqArrayElement = (array) => array[array.length - 1];
-
 const getRandomArrayElement = (array) => array[getRandomInclusive(0, array.length - 1, 'int')];
 
-// TODO Homework Chapter 3
-// ! Creating an array of 10 generated JS objects
-/*
-? Structure function output:
-author (obj) = {
-  avatar (string): "img/avatars/user{{xx}}.png", // Unique {{xx}} randomInt(1, 10) with leading zero, like "01".
-};
+const numberPhotos = shuffleArray(getOrderNumbersArray(SIMILAR_ADVERTISEMENTS_COUNT));
 
-offer (obj) = {
-  title (string): "string", // offer title. Come up with it yourself.
-  address (string): "{{location.x}}, {{location.y}}", // offer address
-  price (int): n, // random positive integer
-  type (string): "one of four", // fixed values - palace, flat, house, bungalow
-  rooms (int): n, // random positive integer
-  guests (int): n, // random positive integer
-  checkin (string): "one of three", // fixed values - 12:00, 13:00, 14:00
-  checkout (string): "one of three", // fixed values - 12:00, 13:00, 14:00
-  features (array string): [], // unique arr random length - [wifi, dishwasher, parking, washer, elevator, conditioner]
-  description (string): "string", // description of the premises. Come up with it yourself.
-  photos (array string): [],
-  // arr random length
-  [
-  http://o0.github.io/assets/images/tokyo/hotel1.jpg,
-  http://o0.github.io/assets/images/tokyo/hotel2.jpg,
-  http://o0.github.io/assets/images/tokyo/hotel3.jpg
-  ]
-};
+const getAvatarMask = (array) => {
+  let maskString = `img/avatars/user0${array[array.length - 1]}.png`;
+  array.pop();
 
-location (obj) = {
-  x (float): n.m(5), // random float from 35.65000 to 35.70000
-  y (float): n.m(5), // random float from 139.70000 to 139.80000
+  return maskString;
 };
-*/
 
 const createAuthor = () => {
   const author = {
-    // TODO uniq number (create array with exit indexes)
-    avatar: "photo mask - img/avatars/user{{xx}}.png",
+    avatar: getAvatarMask(numberPhotos),
   };
 
   return {
@@ -139,8 +148,8 @@ const createAuthor = () => {
 
 const createLocation = () => {
   const location = {
-    x: getRandomInclusive(35.65000, 35.70000, 'float', 5),
-    y: getRandomInclusive(139.70000, 139.80000, 'float', 5),
+    x: getRandomInclusive(LatitudeX.MIN, LatitudeX.MAX, 'float', LatitudeX.DECIMAL),
+    y: getRandomInclusive(LongitudeY.MIN, LongitudeY.MAX, 'float', LongitudeY.DECIMAL),
 
     getLocationCoordinates: function () {
       return [this.x, this.y];
@@ -148,23 +157,34 @@ const createLocation = () => {
   };
 
   return {
-    location
+    location,
   };
+};
+
+const getUniqueArray = (values) => {
+  const uniqueArray = shuffleArray(values.slice());
+  const randomLength = getRandomInclusive(1, values.length - 1, 'int');
+
+  while (uniqueArray.length > randomLength) {
+    uniqueArray.pop();
+  }
+
+  return uniqueArray;
 };
 
 const createOffer = () => {
   const offer = {
-    title: getRandomArrayElement(TITLE_OFFER),
+    title: getRandomArrayElement(TITLES_OFFER),
     address: 'location mask - "{{location.x}}, {{location.y}}"',
-    price: getRandomInclusive(10_000, 1_000_000, 'int'),
-    type: getRandomArrayElement(TYPE_HOUSING_OFFER),
-    rooms: getRandomInclusive(1, 6, 'int'),
-    guests: getRandomInclusive(1, 5, 'int'),
-    checkin: `${getRandomInclusive(12, 14, 'int')}:00`,
-    checkout: `${getRandomInclusive(12, 14, 'int')}:00`,
-    features: ['string'], // TODO unique arr random length - [wifi, dishwasher, parking, washer, elevator, conditioner]
-    description: 'another description for the best hotel in da world',
-    photos: ['string'], // TODO unique arr random length
+    price: getRandomInclusive(Price.MIN, Price.MAX, 'int'),
+    type: getRandomArrayElement(TYPES_HOUSING_OFFER),
+    rooms: getRandomInclusive(NumberRooms.MIN, NumberRooms.MAX, 'int'),
+    guests: getRandomInclusive(NumberGuests.MIN, NumberGuests.MAX, 'int'),
+    checkin: getRandomArrayElement(TIME_CHECK_IN_OUT),
+    checkout: getRandomArrayElement(TIME_CHECK_IN_OUT),
+    features: getUniqueArray(FEATURES_OFFER),
+    description: getRandomArrayElement(DESCRIPTIONS_OFFER),
+    photos: getUniqueArray(PHOTOS_OFFER),
   };
 
   return {
@@ -172,27 +192,15 @@ const createOffer = () => {
   };
 };
 
-const getLocationMask = (locationParentObj) => locationParentObj.location.getLocationCoordinates().join(', ');
-
-let photoNumbers = getOrderNumbersArray(SIMILAR_ADVERTISEMENTS_COUNT);
-shuffleArray(photoNumbers);
-console.log('До pop: ' + photoNumbers + ', Длина: ' + photoNumbers.length);
+const getLocationMask = (parentObj) => parentObj.location.getLocationCoordinates().join(', ');
 
 const createFullOfferNearby = () => {
-  const authorParent = createAuthor();
-
-
-
-  authorParent.author.avatar = `img/avatars/user0${getUniqArrayElement(photoNumbers)}.png`;
-  photoNumbers.pop();
-  console.log('После pop: ' + photoNumbers + ', Длина: ' + photoNumbers.length);
-
   const locationParent = createLocation();
-  const offerParent = createOffer()
+  const offerParent = createOffer();
 
   offerParent.offer.address = getLocationMask(locationParent);
 
-  return Object.assign({}, authorParent, locationParent, offerParent);
+  return Object.assign({}, createAuthor(), locationParent, offerParent);
 };
 
 
