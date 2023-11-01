@@ -1,9 +1,40 @@
 'use strict';
 
-const TITLE_OFFER = ['Hotel', 'Hostel', 'Apartment', 'Houseroom', 'Motel', 'B&B-hotel', 'Apart-hotel',
-  'Capsule hotel', 'Guest-house', 'Bed and Breakfast'];
-const FEATURES_OFFER = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-const TYPE_HOUSING_OFFER = ['palace', 'flat', 'house', 'bungalow'];
+const TITLE_OFFER =
+  [
+    'Hotel',
+    'Hostel',
+    'Apartment',
+    'Houseroom',
+    'Motel',
+    'B&B-hotel',
+    'Apart-hotel',
+    'Capsule hotel',
+    'Guest-house',
+    'Bed and Breakfast'
+  ];
+const FEATURES_OFFER =
+  [
+    'wifi',
+    'dishwasher',
+    'parking',
+    'washer',
+    'elevator',
+    'conditioner'
+  ];
+const TYPE_HOUSING_OFFER =
+  [
+    'palace',
+    'flat',
+    'house',
+    'bungalow'
+  ];
+const PHOTOS_OFFER =
+  [
+    'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+    'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+    'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+  ];
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
 
 const getRandomInclusive = (min, max, numberType = 'int', decimals = 5) => {
@@ -45,26 +76,21 @@ const shuffleArray = (array) => {
   }
 
   return array;
-}
+};
 
-// ! Возможно, сделать через new Array ? (унифицированную функцию)
-const createNumbersArray = (length) => {
-  let arr = [];
+const getOrderNumbersArray = (length) => {
+  let arr = new Array(length).fill(null);
 
-  for (let i = 1; i <= length; i++) {
-    arr.push(i);
+  for (let i = 0; i < length; i++) {
+    arr[i] = i + 1;
   }
 
-  console.log(arr);
   return arr;
-}
+};
 
-// TODO из-за того, что вызов функции каждый раз новый, простой цикл не подойдет. Придется либо глобальную переменную
-// использовать, либо пересоздавать массив, удаляю из него полученный значения
+const getUniqArrayElement = (array) => array[array.length - 1];
 
-createNumbersArray(10);
-let arr = shuffleArray(createNumbersArray(10));
-console.log(arr);
+const getRandomArrayElement = (array) => array[getRandomInclusive(0, array.length - 1, 'int')];
 
 // TODO Homework Chapter 3
 // ! Creating an array of 10 generated JS objects
@@ -100,10 +126,10 @@ location (obj) = {
 };
 */
 
-const createAuthorAvatar = () => {
+const createAuthor = () => {
   const author = {
     // TODO uniq number (create array with exit indexes)
-    avatar: `img/avatars/user0${getRandomInclusive(0, 10, 'int')}.png`,
+    avatar: "photo mask - img/avatars/user{{xx}}.png",
   };
 
   return {
@@ -111,38 +137,34 @@ const createAuthorAvatar = () => {
   };
 };
 
-// ! Адреса и локации разнятся, нужно куда-то сохранять значения
-// TODO use destructuring to 'x' and 'y' arguments
 const createLocation = () => {
   const location = {
     x: getRandomInclusive(35.65000, 35.70000, 'float', 5),
     y: getRandomInclusive(139.70000, 139.80000, 'float', 5),
+
+    getLocationCoordinates: function () {
+      return [this.x, this.y];
+    },
   };
 
   return {
-    location,
+    location
   };
-};
-
-const getLocationMask = (obj) => {
-  return Object.entries(obj.location)
-    .map(([key, value]) => `${key}.${value}`)
-    .join(', ');
 };
 
 const createOffer = () => {
   const offer = {
-    title: 'hotel', // TODO data.js - [hotel, hostel, сделать массив с названиями отелей]
-    address: getLocationMask(createLocation()), // TODO чтобы значения сохранялись в объекте
+    title: getRandomArrayElement(TITLE_OFFER),
+    address: 'location mask - "{{location.x}}, {{location.y}}"',
     price: getRandomInclusive(10_000, 1_000_000, 'int'),
-    type: 'one of four', // TODO data.js - fixed values - [palace, flat, house, bungalow],
+    type: getRandomArrayElement(TYPE_HOUSING_OFFER),
     rooms: getRandomInclusive(1, 6, 'int'),
-    guests: getRandomInclusive(1, 10, 'int'),
+    guests: getRandomInclusive(1, 5, 'int'),
     checkin: `${getRandomInclusive(12, 14, 'int')}:00`,
     checkout: `${getRandomInclusive(12, 14, 'int')}:00`,
     features: ['string'], // TODO unique arr random length - [wifi, dishwasher, parking, washer, elevator, conditioner]
-    description: '?for pidors!',
-    photos: ['string'],
+    description: 'another description for the best hotel in da world',
+    photos: ['string'], // TODO unique arr random length
   };
 
   return {
@@ -150,10 +172,33 @@ const createOffer = () => {
   };
 };
 
-const createFullOfferNearby = () => Object.assign({}, createAuthorAvatar(), createLocation(), createOffer());
+const getLocationMask = (locationParentObj) => locationParentObj.location.getLocationCoordinates().join(', ');
 
-const similarAdvertisementsNearby = new Array(SIMILAR_ADVERTISEMENTS_COUNT)
-  .fill(null)
-  .map(() => createFullOfferNearby());
+let photoNumbers = getOrderNumbersArray(SIMILAR_ADVERTISEMENTS_COUNT);
+shuffleArray(photoNumbers);
+console.log('До pop: ' + photoNumbers + ', Длина: ' + photoNumbers.length);
+
+const createFullOfferNearby = () => {
+  const authorParent = createAuthor();
+
+
+
+  authorParent.author.avatar = `img/avatars/user0${getUniqArrayElement(photoNumbers)}.png`;
+  photoNumbers.pop();
+  console.log('После pop: ' + photoNumbers + ', Длина: ' + photoNumbers.length);
+
+  const locationParent = createLocation();
+  const offerParent = createOffer()
+
+  offerParent.offer.address = getLocationMask(locationParent);
+
+  return Object.assign({}, authorParent, locationParent, offerParent);
+};
+
+
+const similarAdvertisementsNearby =
+  new Array(SIMILAR_ADVERTISEMENTS_COUNT)
+    .fill(null)
+    .map(() => createFullOfferNearby());
 
 console.log(similarAdvertisementsNearby);
