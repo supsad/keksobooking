@@ -1,6 +1,7 @@
 'use strict';
 
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
+
 const TITLES_OFFER = [
   'Hotel',
   'Hostel',
@@ -13,6 +14,7 @@ const TITLES_OFFER = [
   'Guest-house',
   'Bed and Breakfast',
 ];
+
 const DESCRIPTIONS_OFFER = [
   'A luxurious five-star hotel with a sea view, the perfect place for a romantic getaway.',
   'A modern boutique hotel in the city center with a unique design and high-level service.',
@@ -25,6 +27,7 @@ const DESCRIPTIONS_OFFER = [
   'A historic hotel in a heritage building with original decor and antique furniture.',
   'A specialized hotel for business travelers with modern conference rooms and business services.',
 ];
+
 const FEATURES_OFFER = [
   'wifi',
   'dishwasher',
@@ -33,17 +36,20 @@ const FEATURES_OFFER = [
   'elevator',
   'conditioner',
 ];
+
 const TYPES_HOUSING_OFFER = [
   'palace',
   'flat',
   'house',
   'bungalow',
 ];
+
 const PHOTOS_OFFER = [
   'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg',
 ];
+
 const TIME_CHECK_IN_OUT = [
   '12:00',
   '13:00',
@@ -55,24 +61,27 @@ const LatitudeX = {
   MAX: 35.70000,
   DECIMAL: 5,
 };
+
 const LongitudeY = {
   MIN: 139.70000,
   MAX: 139.80000,
   DECIMAL: 5,
 };
+
 const Price = {
   MIN: 10000,
   MAX: 300000,
 };
+
 const NumberRooms = {
   MIN: 1,
   MAX: 6,
 };
+
 const NumberGuests = {
   MIN: 1,
   MAX: 5,
 };
-
 
 const getRandomInclusive = (min, max, numberType = 'int', decimals = LatitudeX.DECIMAL) => {
   if (min < 0 || max < 0) {
@@ -90,10 +99,9 @@ const getRandomInclusive = (min, max, numberType = 'int', decimals = LatitudeX.D
 
       return Math.floor(Math.random() * (max - min + 1)) + min;
 
-    // * .toFixed() at the end because in .parseFloat() it didn't produce fixed length decimals
     case 'float':
     case 'double':
-      return parseFloat((Math.random() * (max - min) + min)).toFixed(decimals);
+      return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
 
     default:
       return -1;
@@ -137,27 +145,15 @@ const getAvatarMask = (array) => {
 };
 
 const createAuthor = () => {
-  const author = {
-    avatar: getAvatarMask(numberPhotos),
-  };
-
   return {
-    author,
+    avatar: getAvatarMask(numberPhotos),
   };
 };
 
 const createLocation = () => {
-  const location = {
+  return {
     x: getRandomInclusive(LatitudeX.MIN, LatitudeX.MAX, 'float', LatitudeX.DECIMAL),
     y: getRandomInclusive(LongitudeY.MIN, LongitudeY.MAX, 'float', LongitudeY.DECIMAL),
-
-    getLocationCoordinates: function () {
-      return [this.x, this.y];
-    },
-  };
-
-  return {
-    location,
   };
 };
 
@@ -173,7 +169,7 @@ const getUniqueArray = (values) => {
 };
 
 const createOffer = () => {
-  const offer = {
+  return {
     title: getRandomArrayElement(TITLES_OFFER),
     address: 'location mask - "{{location.x}}, {{location.y}}"',
     price: getRandomInclusive(Price.MIN, Price.MAX, 'int'),
@@ -186,21 +182,22 @@ const createOffer = () => {
     description: getRandomArrayElement(DESCRIPTIONS_OFFER),
     photos: getUniqueArray(PHOTOS_OFFER),
   };
-
-  return {
-    offer,
-  };
 };
 
-const getLocationMask = (parentObj) => parentObj.location.getLocationCoordinates().join(', ');
+const getLocationMask = (location) => [location.x, location.y].join(', ');
 
 const createFullOfferNearby = () => {
-  const locationParent = createLocation();
-  const offerParent = createOffer();
+  const author = createAuthor();
+  const location = createLocation();
+  const offer = createOffer();
 
-  offerParent.offer.address = getLocationMask(locationParent);
+  offer.address = getLocationMask(location);
 
-  return Object.assign({}, createAuthor(), locationParent, offerParent);
+  return {
+    author,
+    offer,
+    location,
+  };
 };
 
 
