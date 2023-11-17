@@ -1,3 +1,3 @@
-import {similarAdvertisementsNearby} from './data.js';
+import {addCardToMap} from './map.js';
 
-console.log(similarAdvertisementsNearby);
+addCardToMap();

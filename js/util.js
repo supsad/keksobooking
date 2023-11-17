@@ -50,6 +50,8 @@ const getOrderNumbersArray = (length) => {
 
 const getRandomArrayElement = (array) => array[getRandomInclusive(0, array.length - 1, 'int')];
 
+const getRandomKey = (obj) => getRandomArrayElement(Object.keys(obj));
+
 const getUniqueArray = (values) => {
   const uniqueArray = shuffleArray(values.slice());
   const randomLength = getRandomInclusive(1, values.length - 1, 'int');
@@ -61,10 +63,20 @@ const getUniqueArray = (values) => {
   return uniqueArray;
 };
 
+const clearList = (list) => {
+  for (let i = list.children.length - 1; i >= 0; i--) {
+    const child = list.children[i];
+
+    child.parentElement.removeChild(child);
+  }
+};
+
 export {
   getRandomInclusive,
   shuffleArray,
   getOrderNumbersArray,
   getRandomArrayElement,
-  getUniqueArray
+  getRandomKey,
+  getUniqueArray,
+  clearList
 }
