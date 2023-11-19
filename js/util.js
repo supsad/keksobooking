@@ -53,7 +53,7 @@ const getRandomArrayElement = (array) => array[getRandomInclusive(0, array.lengt
 const getRandomKey = (obj) => getRandomArrayElement(Object.keys(obj));
 
 const getUniqueArray = (values) => {
-  const uniqueArray = shuffleArray(values.slice());
+  const uniqueArray = shuffleArray([...values]);
   const randomLength = getRandomInclusive(1, values.length - 1, 'int');
 
   while (uniqueArray.length > randomLength) {
@@ -71,6 +71,8 @@ const clearList = (list) => {
   }
 };
 
+const syncOptionsHandler = (initList, changeList) => changeList.selectedIndex = initList.selectedIndex;
+
 export {
   getRandomInclusive,
   shuffleArray,
@@ -78,5 +80,6 @@ export {
   getRandomArrayElement,
   getRandomKey,
   getUniqueArray,
-  clearList
+  clearList,
+  syncOptionsHandler
 }

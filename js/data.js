@@ -1,10 +1,10 @@
 import {
-  getUniqueArray,
   getOrderNumbersArray,
   getRandomArrayElement,
   getRandomInclusive,
-  shuffleArray,
-  getRandomKey
+  getRandomKey,
+  getUniqueArray,
+  shuffleArray
 } from './util.js';
 
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
@@ -63,6 +63,13 @@ const OfferTypes = {
   PALACE: 'Дворец',
 };
 
+const TypeMinPrices = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOUSE: 5000,
+  PALACE: 10000,
+};
+
 const LatitudeX = {
   MIN: 35.65000,
   MAX: 35.70000,
@@ -76,8 +83,8 @@ const LongitudeY = {
 };
 
 const Price = {
-  MIN: 10000,
-  MAX: 300000,
+  MIN: 0,
+  MAX: 1000000,
 };
 
 const NumberRooms = {
@@ -90,8 +97,6 @@ const NumberGuests = {
   MAX: 5,
 };
 
-const numberPhotos = shuffleArray(getOrderNumbersArray(SIMILAR_ADVERTISEMENTS_COUNT));
-
 const getAvatarMask = (array) => {
   let maskString = `img/avatars/user0${array[array.length - 1]}.png`;
   array.pop();
@@ -100,6 +105,8 @@ const getAvatarMask = (array) => {
 };
 
 const createAuthor = () => {
+  const numberPhotos = shuffleArray(getOrderNumbersArray(SIMILAR_ADVERTISEMENTS_COUNT));
+
   return {
     avatar: getAvatarMask(numberPhotos),
   };
@@ -150,4 +157,4 @@ const similarAdvertisementsNearby =
     .fill(null)
     .map(() => createFullOfferNearby());
 
-export {similarAdvertisementsNearby, OfferTypes}
+export {similarAdvertisementsNearby, OfferTypes, TypeMinPrices}
