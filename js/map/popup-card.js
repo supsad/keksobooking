@@ -1,5 +1,5 @@
-import {OfferTypes, similarAdvertisementsNearby} from './data.js';
-import {clearList} from './util.js';
+import {OfferTypes, similarAdvertisementsNearby} from '../data.js';
+import {clearList} from '../util.js';
 
 const cardTemplate = document.querySelector('#card').content;
 const card = cardTemplate.querySelector('.popup');
@@ -16,19 +16,19 @@ const addCardFeatures = (list, features) => {
 
 const addCardType = (type) => OfferTypes[type.toUpperCase()];
 
-const addCardPhotos = (container, offer) => {
+const addCardPhotos = (container, photos) => {
   clearList(container);
 
-  for (let i = 0; i < offer.photos.length; i++) {
+  photos.forEach((photoURL) => {
     const photo = document.createElement('img');
     photo.className = 'popup__photo';
-    photo.src = offer.photos[i];
+    photo.src = photoURL;
     photo.width = 45;
     photo.height = 40;
     photo.alt = 'Фотография жилья';
 
     container.appendChild(photo);
-  }
+  });
 
   return container;
 };
@@ -66,7 +66,7 @@ const getNewCard = ({author, offer}) => {
   cardDescription.textContent = offer.description;
 
   const cardPhotoList = newCard.querySelector('.popup__photos');
-  addCardPhotos(cardPhotoList, offer);
+  addCardPhotos(cardPhotoList, offer.photos);
 
   return newCard;
 };
@@ -74,7 +74,10 @@ const getNewCard = ({author, offer}) => {
 const renderCards = () => {
   const cardFragment = document.createDocumentFragment();
 
+  // * Render all ad cards
   // similarAdvertisementsNearby.forEach((advertisement)=> cardFragment.appendChild(getNewCard(advertisement)));
+
+  // * Render 1 test card
   return cardFragment.appendChild(getNewCard(similarAdvertisementsNearby[0]));
 };
 
