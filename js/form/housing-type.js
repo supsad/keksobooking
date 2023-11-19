@@ -6,7 +6,9 @@ const price = document.querySelector('#price');
 const syncValue = () => {
   let selectedType = type.options[type.selectedIndex].value.toUpperCase();
 
-  if (selectedType === 'BUNGALOW') TypeMinPrices['BUNGALOW'] = TypeMinPrices['BUNGALOW'].toString();
+  if (selectedType === 'BUNGALOW') {
+    TypeMinPrices['BUNGALOW'] = TypeMinPrices['BUNGALOW'].toString();
+  }
 
   if (TypeMinPrices[selectedType]) {
     price.min = TypeMinPrices[selectedType];
