@@ -73,6 +73,12 @@ const clearList = (list) => {
 
 const syncOptionsHandler = (initList, changeList) => changeList.selectedIndex = initList.selectedIndex;
 
+const fillArrayOfNodeList = (entryArray, nodeList) => {
+  return Array.prototype.forEach.call(nodeList, function(element){
+    entryArray.push(element);
+  });
+};
+
 export {
   getRandomInclusive,
   shuffleArray,
@@ -81,5 +87,6 @@ export {
   getRandomKey,
   getUniqueArray,
   clearList,
-  syncOptionsHandler
+  syncOptionsHandler,
+  fillArrayOfNodeList
 }
