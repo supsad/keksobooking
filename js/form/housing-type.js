@@ -1,21 +1,21 @@
 import {TypeMinPrices} from '../data.js';
 
-const type = document.querySelector('#type');
-const price = document.querySelector('#price');
+const typeElement = document.querySelector('#type');
+const priceElement = document.querySelector('#price');
 
 const syncValue = () => {
-  let selectedType = type.options[type.selectedIndex].value.toUpperCase();
+  let selectedType = typeElement.options[typeElement.selectedIndex].value.toUpperCase();
 
+  // * 0 is not displayed, so it is converted to text
   if (selectedType === 'BUNGALOW') {
     TypeMinPrices['BUNGALOW'] = TypeMinPrices['BUNGALOW'].toString();
   }
 
   if (TypeMinPrices[selectedType]) {
-    price.min = TypeMinPrices[selectedType];
-    price.placeholder = TypeMinPrices[selectedType];
+    let priceValue = TypeMinPrices[selectedType];
+    priceElement.min = priceValue;
+    priceElement.placeholder = priceValue;
   }
 };
 
-syncValue();
-
-type.addEventListener('change', syncValue);
+export {typeElement as houseType, syncValue};

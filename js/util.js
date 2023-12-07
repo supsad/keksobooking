@@ -48,36 +48,24 @@ const getOrderNumbersArray = (length) => {
   return arr;
 };
 
-const getRandomArrayElement = (array) => array[getRandomInclusive(0, array.length - 1, 'int')];
+const getRandomArrayElement = (array) => array[getRandomInclusive(0, array.length - 1)];
 
 const getRandomKey = (obj) => getRandomArrayElement(Object.keys(obj));
 
 const getUniqueArray = (values) => {
   const uniqueArray = shuffleArray([...values]);
-  const randomLength = getRandomInclusive(1, values.length - 1, 'int');
+  const randomLength = getRandomInclusive(1, values.length - 1);
 
   while (uniqueArray.length > randomLength) {
     uniqueArray.pop();
   }
 
-  return uniqueArray;
+  return uniqueArray.slice(0, randomLength);
 };
 
-const clearList = (list) => {
-  for (let i = list.children.length - 1; i >= 0; i--) {
-    const child = list.children[i];
-
-    child.parentElement.removeChild(child);
-  }
-};
+const clearList = (list) => list.innerHTML = '';
 
 const syncOptionsHandler = (initList, changeList) => changeList.selectedIndex = initList.selectedIndex;
-
-const fillArrayOfNodeList = (entryArray, nodeList) => {
-  return Array.prototype.forEach.call(nodeList, function(element){
-    entryArray.push(element);
-  });
-};
 
 export {
   getRandomInclusive,
@@ -87,6 +75,5 @@ export {
   getRandomKey,
   getUniqueArray,
   clearList,
-  syncOptionsHandler,
-  fillArrayOfNodeList
-}
+  syncOptionsHandler
+};

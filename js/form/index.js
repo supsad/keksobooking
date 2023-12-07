@@ -1,2 +1,2 @@
-export * from './housing-type.js';
-export * from './check-in-out-time.js';
+export {houseType, syncValue} from './housing-type.js';
+export {timeinSelect, timeoutSelect, onSync} from './check-in-out-time.js';

@@ -1,8 +1,17 @@
-import {OfferTypes, similarAdvertisementsNearby} from '../data.js';
+import {advertisements, OfferTypes} from '../data.js';
 import {clearList} from '../util.js';
 
 const cardTemplate = document.querySelector('#card').content;
+// add error check in case there is no element with id 'card'
+if (!cardTemplate) {
+  throw new Error('Card template is missing in the markup.');
+}
+
 const card = cardTemplate.querySelector('.popup');
+// add error check in case there is no element with class 'popup'
+if (!card) {
+  throw new Error('Popup card is missing in the markup');
+}
 
 const addCardFeatures = (list, features) => {
   clearList(list);
@@ -74,11 +83,15 @@ const getNewCard = ({author, offer}) => {
 const renderCards = () => {
   const cardFragment = document.createDocumentFragment();
 
-  // * Render all ad cards
-  // similarAdvertisementsNearby.forEach((advertisement)=> cardFragment.appendChild(getNewCard(advertisement)));
+  // Error check in case advertisements is not an array or is an empty array
+  if (!Array.isArray(advertisements) || !advertisements.length) {
+    throw new Error('No advertisements data');
+  } else {
+    // Add render for each advertisement card
+    advertisements.forEach(advertisement => cardFragment.appendChild(getNewCard(advertisement)));
+  }
 
-  // * Render 1 test card
-  return cardFragment.appendChild(getNewCard(similarAdvertisementsNearby[0]));
+  return cardFragment;
 };
 
-export {renderCards}
+export {renderCards};
