@@ -1,3 +1,2 @@
-import './inactive-page.js';
+import './interactive-page/index.js';
 import './map/index.js';
-import './form/index.js';

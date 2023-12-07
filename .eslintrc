@@ -1,5 +1,8 @@
 root: true
 
+globals:
+  "L": true
+
 parserOptions:
   ecmaVersion: 2018
   sourceType: "module"

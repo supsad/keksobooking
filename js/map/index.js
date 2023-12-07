@@ -1,3 +1,1 @@
-import {addCardToMap} from './map.js';
-
-addCardToMap();
+export * from './map.js';

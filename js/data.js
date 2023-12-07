@@ -56,6 +56,11 @@ const TIME_CHECK_IN_OUT = [
   '14:00',
 ];
 
+const TokyoCoordinates = {
+  LatitudeX: 35.68950,
+  LongitudeY: 139.69200,
+};
+
 const OfferTypes = {
   FLAT: 'Квартира',
   BUNGALOW: 'Бунгало',
@@ -99,29 +104,29 @@ const NumberGuests = {
   MAX: 5,
 };
 
-const getAvatarMask = (array) => {
+const getMaskNameAvatar = (array) => {
   let maskString = `img/avatars/user0${array[array.length - 1]}.png`;
   array.pop();
 
   return maskString;
 };
 
-const createAuthor = () => {
+const generateAvatar = () => {
   const numberPhotos = shuffleArray(getOrderNumbersArray(SIMILAR_ADVERTISEMENTS_COUNT));
 
   return {
-    avatar: getAvatarMask(numberPhotos),
+    avatar: getMaskNameAvatar(numberPhotos),
   };
 };
 
-const createLocation = () => {
+const generateRandomLocation = () => {
   return {
     x: getRandomInclusive(LatitudeX.MIN, LatitudeX.MAX, 'float', LatitudeX.DECIMAL),
     y: getRandomInclusive(LongitudeY.MIN, LongitudeY.MAX, 'float', LongitudeY.DECIMAL),
   };
 };
 
-const createOffer = () => {
+const generateRandomOffer = () => {
   return {
     title: getRandomArrayElement(TITLES_OFFER),
     address: 'location mask - "{{location.x}}, {{location.y}}"',
@@ -139,10 +144,10 @@ const createOffer = () => {
 
 const getLocationMask = (location) => [location.x, location.y].join(', ');
 
-const createFullOfferNearby = () => {
-  const author = createAuthor();
-  const location = createLocation();
-  const offer = createOffer();
+const generateAdvertisement = () => {
+  const author = generateAvatar();
+  const location = generateRandomLocation();
+  const offer = generateRandomOffer();
 
   offer.address = getLocationMask(location);
 
@@ -153,10 +158,17 @@ const createFullOfferNearby = () => {
   };
 };
 
+// * Create an advertisements generator function
+// * This function accepts a count and returns an array of mock advertisements
+const generateNearbyAdvertisements = (count) => {
+  // ? Ensure count is a positive integer
+  if (!Number.isInteger(count) || count <= 0) {
+    throw new Error('Count must be a positive integer');
+  }
 
-const similarAdvertisementsNearby =
-  new Array(SIMILAR_ADVERTISEMENTS_COUNT)
-    .fill(null)
-    .map(() => createFullOfferNearby());
+  return Array.from({ length: count }, generateAdvertisement);
+};
 
-export {similarAdvertisementsNearby, OfferTypes, TypeMinPrices}
+const advertisements = generateNearbyAdvertisements(SIMILAR_ADVERTISEMENTS_COUNT);
+
+export {advertisements, OfferTypes, TypeMinPrices, TokyoCoordinates};
