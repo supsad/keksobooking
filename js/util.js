@@ -67,6 +67,8 @@ const clearList = (list) => list.innerHTML = '';
 
 const syncOptionsHandler = (initList, changeList) => changeList.selectedIndex = initList.selectedIndex;
 
+const disabledAttrHandler = (state, elements) => elements.forEach((element) => element.disabled = state);
+
 export {
   getRandomInclusive,
   shuffleArray,
@@ -75,5 +77,6 @@ export {
   getRandomKey,
   getUniqueArray,
   clearList,
-  syncOptionsHandler
+  syncOptionsHandler,
+  disabledAttrHandler
 };

@@ -1,3 +1,4 @@
+import {disabledAttrHandler} from '../util.js';
 import {houseType, onSync, syncValue, timeinSelect, timeoutSelect} from '../form/index.js';
 
 const Mode = {
@@ -5,19 +6,16 @@ const Mode = {
   ACTIVE: 'active',
 };
 
-const updateEventListeners = (addEvent) => {
-  const method = addEvent ? 'addEventListener' : 'removeEventListener';
+const updateEventListeners = (shouldAddEvent, elements) => {
+  const method = shouldAddEvent ? 'addEventListener' : 'removeEventListener';
   houseType[method]('change', syncValue);
-  timeinSelect[method]('change', onSync);
-  timeoutSelect[method]('change', onSync);
+  elements.forEach(element => element[method]('change', onSync));
 };
 
 const toggleClass = (mode, forms) => {
   const method = (mode === Mode.ACTIVE) ? 'remove' : 'add';
   forms.forEach((form) => form.classList[method]('ad-form--disabled'));
 };
-
-const disabledAttrHandler = (state, elements) => elements.forEach((element) => element.disabled = state);
 
 const getInteractiveElements = (forms) => {
   return forms.reduce((acc, form) => {
@@ -35,7 +33,10 @@ const toggleInteractiveElements = (mode, forms) => {
 };
 
 const renderInteractiveElements = (mode, forms) => {
-  updateEventListeners(mode === Mode.ACTIVE);
+  updateEventListeners(
+    mode === Mode.ACTIVE,
+    [timeinSelect, timeoutSelect],
+  );
   toggleClass(mode, forms);
   toggleInteractiveElements(mode, forms);
 

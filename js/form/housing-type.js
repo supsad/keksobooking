@@ -1,7 +1,15 @@
 import {TypeMinPrices} from '../data.js';
 
+const Price = {
+  MAX_LENGTH: 1000000,
+  REQUIRED: true,
+};
+
 const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
+
+priceElement.max = Price.MAX_LENGTH;
+priceElement.required = Price.REQUIRED;
 
 const syncValue = () => {
   let selectedType = typeElement.options[typeElement.selectedIndex].value.toUpperCase();

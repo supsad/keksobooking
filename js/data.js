@@ -57,8 +57,8 @@ const TIME_CHECK_IN_OUT = [
 ];
 
 const TokyoCoordinates = {
-  LatitudeX: 35.68950,
-  LongitudeY: 139.69200,
+  LATITUDE_X: 35.68950,
+  LONGITUDE_Y: 139.69200,
 };
 
 const OfferTypes = {
@@ -167,4 +167,4 @@ const generateNearbyAdvertisements = (count) => {
 
 const advertisements = generateNearbyAdvertisements(SIMILAR_ADVERTISEMENTS_COUNT);
 
-export {advertisements, OfferTypes, TypeMinPrices, TokyoCoordinates};
+export {advertisements, OfferTypes, TypeMinPrices, TokyoCoordinates, LongitudeY, LatitudeX};

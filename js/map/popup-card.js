@@ -1,6 +1,12 @@
 import {OfferTypes} from '../data.js';
 import {clearList} from '../util.js';
 
+const PhotoOptions = {
+  WIDTH: 45,
+  HEIGHT: 40,
+  ALT: 'Фотография жилья.',
+};
+
 const cardTemplate = document.querySelector('#card').content;
 // add error check in case there is no element with id 'card'
 if (!cardTemplate) {
@@ -32,9 +38,9 @@ const addCardPhotos = (container, photos) => {
     const photo = document.createElement('img');
     photo.className = 'popup__photo';
     photo.src = photoURL;
-    photo.width = 45;
-    photo.height = 40;
-    photo.alt = 'Фотография жилья';
+    photo.width = PhotoOptions.WIDTH;
+    photo.height = PhotoOptions.HEIGHT;
+    photo.alt = PhotoOptions.ALT;
 
     container.appendChild(photo);
   });
