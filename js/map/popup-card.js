@@ -1,4 +1,4 @@
-import {advertisements, OfferTypes} from '../data.js';
+import {OfferTypes} from '../data.js';
 import {clearList} from '../util.js';
 
 const cardTemplate = document.querySelector('#card').content;
@@ -45,6 +45,8 @@ const addCardPhotos = (container, photos) => {
 const getNewCard = ({author, offer}) => {
   const newCard = card.cloneNode(true);
 
+  newCard.id = 'card';
+
   const cardAvatar = newCard.querySelector('.popup__avatar');
   cardAvatar.src = author.avatar;
 
@@ -80,20 +82,4 @@ const getNewCard = ({author, offer}) => {
   return newCard;
 };
 
-const getCardsFragment = () => {
-  const cardFragment = document.createDocumentFragment();
-
-  // Error check in case advertisements is not an array or is an empty array
-  if (!Array.isArray(advertisements) || !advertisements.length) {
-    throw new Error('No advertisements data');
-  } else {
-    // Add render for each advertisement card
-    advertisements.forEach(advertisement => cardFragment.appendChild(getNewCard(advertisement)));
-  }
-
-  return cardFragment;
-};
-
-const cardsFragment = getCardsFragment();
-
-export {cardsFragment};
+export {getNewCard};

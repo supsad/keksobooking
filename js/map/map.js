@@ -1,4 +1,5 @@
 import {advertisements, TokyoCoordinates} from '../data.js';
+import {getNewCard} from './popup-card.js';
 import {forms, renderInactiveInterface, renderInteractiveElements} from '../interactive-page/index.js';
 
 const address = document.querySelector('#address');
@@ -71,5 +72,12 @@ advertisements.forEach((advertisement) => {
     },
   );
 
-  pinMarker.addTo(map);
+  pinMarker
+    .addTo(map)
+    .bindPopup(
+      getNewCard(advertisement),
+      {
+        keepInView: true,
+      },
+    );
 });
