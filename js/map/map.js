@@ -1,8 +1,5 @@
-import {TokyoCoordinates} from '../data.js';
-import {renderCards} from './popup-card.js';
+import {advertisements, TokyoCoordinates} from '../data.js';
 import {forms, renderInactiveInterface, renderInteractiveElements} from '../interactive-page/index.js';
-
-const mapCanvas = document.querySelector('#map-canvas');
 
 const address = document.querySelector('#address');
 
@@ -19,7 +16,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: TokyoCoordinates.LatitudeX,
     lng: TokyoCoordinates.LongitudeY,
-  }, 10);
+  }, 12);
 
 const mapTile = L.tileLayer(
   'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
@@ -53,8 +50,26 @@ mainPinMarker.addTo(map);
 mainPinMarker.on('moveend', (evt) => {
   const { lat, lng } = evt.target.getLatLng();
   address.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+})
+
+advertisements.forEach((advertisement) => {
+  const {x,  y} = advertisement.location;
+
+  const pinIcon = L.icon({
+    iconUrl: '/img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const pinMarker = L.marker(
+    {
+      lat: x,
+      lng: y,
+    },
+    {
+      icon: pinIcon,
+    },
+  );
+
+  pinMarker.addTo(map);
 });
-
-const addCardToMap = () => mapCanvas.appendChild(renderCards());
-
-export {addCardToMap};

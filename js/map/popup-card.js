@@ -80,7 +80,7 @@ const getNewCard = ({author, offer}) => {
   return newCard;
 };
 
-const renderCards = () => {
+const getCardsFragment = () => {
   const cardFragment = document.createDocumentFragment();
 
   // Error check in case advertisements is not an array or is an empty array
@@ -94,4 +94,6 @@ const renderCards = () => {
   return cardFragment;
 };
 
-export {renderCards};
+const cardsFragment = getCardsFragment();
+
+export {cardsFragment};
