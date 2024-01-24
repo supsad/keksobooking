@@ -13,10 +13,11 @@ priceElement.required = Price.REQUIRED;
 
 const syncValue = () => {
   let selectedType = typeElement.options[typeElement.selectedIndex].value.toUpperCase();
+  const bungalowKey = Object.keys(TypeMinPrices).find((key) => key === 'BUNGALOW');
 
   // * 0 is not displayed, so it is converted to text
-  if (selectedType === 'BUNGALOW') {
-    TypeMinPrices['BUNGALOW'] = TypeMinPrices['BUNGALOW'].toString();
+  if (selectedType === bungalowKey) {
+    TypeMinPrices[bungalowKey] = TypeMinPrices[bungalowKey].toString();
   }
 
   if (TypeMinPrices[selectedType]) {

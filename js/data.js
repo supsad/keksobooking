@@ -125,11 +125,10 @@ const generateRandomLocation = () => {
 const generateRandomOffer = () => {
   return {
     title: getRandomArrayElement(TITLES_OFFER),
-    address: 'location mask - "{{location.x}}, {{location.y}}"',
-    price: getRandomInclusive(Price.MIN, Price.MAX, 'int'),
+    price: getRandomInclusive(Price.MIN, Price.MAX),
     type: getRandomKey(OfferTypes).toLowerCase(),
-    rooms: getRandomInclusive(NumberRooms.MIN, NumberRooms.MAX, 'int'),
-    guests: getRandomInclusive(NumberGuests.MIN, NumberGuests.MAX, 'int'),
+    rooms: getRandomInclusive(NumberRooms.MIN, NumberRooms.MAX),
+    guests: getRandomInclusive(NumberGuests.MIN, NumberGuests.MAX),
     checkin: getRandomArrayElement(TIME_CHECK_IN_OUT),
     checkout: getRandomArrayElement(TIME_CHECK_IN_OUT),
     features: getUniqueArray(FEATURES_OFFER),
@@ -162,9 +161,9 @@ const generateNearbyAdvertisements = (count) => {
     throw new Error('Count must be a positive integer');
   }
 
-  return Array.from({ length: count }, generateAdvertisement);
+  return Array.from({length: count}, generateAdvertisement);
 };
 
 const advertisements = generateNearbyAdvertisements(SIMILAR_ADVERTISEMENTS_COUNT);
 
-export {advertisements, OfferTypes, TypeMinPrices, TokyoCoordinates, LongitudeY, LatitudeX};
+export {advertisements, OfferTypes, TypeMinPrices, TokyoCoordinates, LongitudeY, LatitudeX, TIME_CHECK_IN_OUT};

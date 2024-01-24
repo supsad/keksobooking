@@ -6,14 +6,24 @@ const Mode = {
   ACTIVE: 'active',
 };
 
+const EventMethod = {
+  ADD: 'addEventListener',
+  REMOVE: 'removeEventListener',
+};
+
+const ClassMethod = {
+  ADD: 'add',
+  REMOVE: 'remove',
+};
+
 const updateEventListeners = (shouldAddEvent, elements) => {
-  const method = shouldAddEvent ? 'addEventListener' : 'removeEventListener';
+  const method = shouldAddEvent ? EventMethod.ADD : EventMethod.REMOVE;
   houseType[method]('change', syncValue);
   elements.forEach(element => element[method]('change', onSync));
 };
 
 const toggleClass = (mode, forms) => {
-  const method = (mode === Mode.ACTIVE) ? 'remove' : 'add';
+  const method = (mode === Mode.ACTIVE) ? ClassMethod.REMOVE : ClassMethod.ADD;
   forms.forEach((form) => form.classList[method]('ad-form--disabled'));
 };
 

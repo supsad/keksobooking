@@ -1,4 +1,10 @@
-const getRandomInclusive = (min, max, numberType = 'int', decimals = 1) => {
+const NumberTypes = {
+  INTEGER: 'integer',
+  FLOAT: 'float',
+  DOUBLE: 'double',
+};
+
+const getRandomInclusive = (min, max, numberType = NumberTypes.INTEGER, decimals = 1) => {
   if (min < 0 || max < 0) {
     return -1;
   }
@@ -8,14 +14,14 @@ const getRandomInclusive = (min, max, numberType = 'int', decimals = 1) => {
   }
 
   switch (numberType) {
-    case 'int':
+    case NumberTypes.INTEGER:
       min = Math.ceil(min);
       max = Math.floor(max);
 
       return Math.floor(Math.random() * (max - min + 1)) + min;
 
-    case 'float':
-    case 'double':
+    case NumberTypes.FLOAT:
+    case NumberTypes.DOUBLE:
       return parseFloat((Math.random() * (max - min) + min).toFixed(decimals));
 
     default:
@@ -63,11 +69,29 @@ const getUniqueArray = (values) => {
   return uniqueArray.slice(0, randomLength);
 };
 
-const clearList = (list) => list.innerHTML = '';
+const clearElement = (element) => element.innerHTML = '';
 
 const syncOptionsHandler = (initList, changeList) => changeList.selectedIndex = initList.selectedIndex;
 
-const disabledAttrHandler = (state, elements) => elements.forEach((element) => element.disabled = state);
+const disabledAttrHandler = (state, elements) => elements.forEach(element => element.disabled = state);
+
+const getIndexNumeralDeclination = (value) => {
+  value = Math.abs(value) % 100;
+  const tempValue = value % 10;
+  const indices = [0, 1, 2];
+
+  if (value > 10 && value < 20) {
+    return indices[2];
+  } else if (tempValue > 1 && tempValue < 5) {
+    return indices[1];
+  } else if (tempValue === 1) {
+    return indices[0];
+  }
+
+  return indices[2];
+};
+
+const getArrayLowerCase = (strings) => strings.map((element) => element.toLowerCase());
 
 export {
   getRandomInclusive,
@@ -76,7 +100,9 @@ export {
   getRandomArrayElement,
   getRandomKey,
   getUniqueArray,
-  clearList,
+  clearElement,
   syncOptionsHandler,
-  disabledAttrHandler
+  disabledAttrHandler,
+  getIndexNumeralDeclination,
+  getArrayLowerCase
 };

@@ -65,7 +65,7 @@ mainPinMarker.addTo(map);
 mainPinMarker.on('moveend', (evt) => {
   const { lat, lng } = evt.target.getLatLng();
   address.value = `${lat.toFixed(LatitudeX.DECIMAL)}, ${lng.toFixed(LongitudeY.DECIMAL)}`;
-})
+});
 
 advertisements.forEach((advertisement) => {
   const {x,  y} = advertisement.location;
