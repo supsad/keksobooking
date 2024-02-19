@@ -1,6 +1,6 @@
 import {advertisements, LatitudeX, LongitudeY, TokyoCoordinates} from '../data.js';
 import {getNewCard} from './popup-card.js';
-import {forms, renderInactiveInterface, renderInteractiveElements} from '../interactive-page/index.js';
+import {forms, renderInactiveInterface, renderInteractiveElements} from '../render-page/index.js';
 
 const MapSettings = {
   ZOOM: 12,
@@ -9,9 +9,10 @@ const MapSettings = {
 const MainPin = {
   WIDTH: 52,
   HEIGHT: 52,
+  Z_INDEX_OFFSET: 1000,
 };
 
-const AdPin = {
+const AdvertisementPin = {
   WIDTH: 40,
   HEIGHT: 40,
 };
@@ -57,6 +58,8 @@ const mainPinMarker = L.marker(
   {
     draggable: true,
     icon: mainPinIcon,
+    zIndexOffset: MainPin.Z_INDEX_OFFSET,
+    riseOnHover: true,
   },
 );
 
@@ -72,8 +75,8 @@ advertisements.forEach((advertisement) => {
 
   const pinIcon = L.icon({
     iconUrl: '/img/pin.svg',
-    iconSize: [AdPin.WIDTH, AdPin.HEIGHT],
-    iconAnchor: [(AdPin.WIDTH / 2), AdPin.HEIGHT],
+    iconSize: [AdvertisementPin.WIDTH, AdvertisementPin.HEIGHT],
+    iconAnchor: [(AdvertisementPin.WIDTH / 2), AdvertisementPin.HEIGHT],
   });
 
   const pinMarker = L.marker(

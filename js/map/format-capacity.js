@@ -1,9 +1,10 @@
-import {getArrayLowerCase, getIndexNumeralDeclination} from '../util.js';
+import {getArrayElementsToLowerCase, getIndexNumeralDeclination} from '../util.js';
 
 const MAX_ROOMS = 100;
 const CAPACITY_MESSAGE = 'Данные количества комнат и гостей не удалось получить.';
 
 // * words without declension
+// * [value % 10 === 1, 1 < value%10 < 5, 10 < value < 20]
 const CapacityStringTemplates = {
   ROOMS: ['Комната', 'Комнаты', 'Комнат'],
   GUESTS: ['Гостя', 'Гостей', 'Гостей'],
@@ -13,15 +14,15 @@ const CapacityStringTemplates = {
 let isMoreThan100Rooms = false;
 const isRoomsOverloaded = (numberOfRooms) => numberOfRooms >= MAX_ROOMS;
 
-const getCapacityText = (numberOfCapacity, stringDictionary) => {
+const getCapacityText = (numberOfCapacity, stringsTemplate) => {
   const declensionIndex = getIndexNumeralDeclination(numberOfCapacity);
-  return `${numberOfCapacity} ${stringDictionary[declensionIndex]}`;
+  return `${numberOfCapacity} ${stringsTemplate[declensionIndex]}`;
 };
 
 const getRoomsString = (numberOfRooms, stringTemplates) => {
   isMoreThan100Rooms = isRoomsOverloaded(numberOfRooms);
 
-  const roomStrings = getArrayLowerCase(stringTemplates.ROOMS);
+  const roomStrings = getArrayElementsToLowerCase(stringTemplates.ROOMS);
 
   if (numberOfRooms > 0) {
     return getCapacityText(numberOfRooms, roomStrings);
@@ -31,7 +32,7 @@ const getRoomsString = (numberOfRooms, stringTemplates) => {
 };
 
 const getGuestsString = (numberOfGuests, stringTemplates) => {
-  const guestStrings = getArrayLowerCase(stringTemplates.GUESTS);
+  const guestStrings = getArrayElementsToLowerCase(stringTemplates.GUESTS);
 
   if (isMoreThan100Rooms) {
     return `Не для ${guestStrings[2].toLowerCase()}`;

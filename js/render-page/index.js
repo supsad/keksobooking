@@ -1,4 +1,4 @@
-import {renderInteractiveElements} from './state-render.js';
+import {renderInteractiveElements} from './render-page.js';
 
 const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');

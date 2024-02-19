@@ -56,7 +56,7 @@ const getOrderNumbersArray = (length) => {
 
 const getRandomArrayElement = (array) => array[getRandomInclusive(0, array.length - 1)];
 
-const getRandomKey = (obj) => getRandomArrayElement(Object.keys(obj));
+const getRandomObjectKey = (obj) => getRandomArrayElement(Object.keys(obj));
 
 const getUniqueArray = (values) => {
   const uniqueArray = shuffleArray([...values]);
@@ -71,7 +71,7 @@ const getUniqueArray = (values) => {
 
 const clearElement = (element) => element.innerHTML = '';
 
-const syncOptionsHandler = (initList, changeList) => changeList.selectedIndex = initList.selectedIndex;
+const syncOptionsHandler = (targetList, changeableList) => changeableList.selectedIndex = targetList.selectedIndex;
 
 const disabledAttrHandler = (state, elements) => elements.forEach(element => element.disabled = state);
 
@@ -91,18 +91,27 @@ const getIndexNumeralDeclination = (value) => {
   return indices[2];
 };
 
-const getArrayLowerCase = (strings) => strings.map((element) => element.toLowerCase());
+const getArrayElementsToLowerCase = (strings) => strings.map((element) => element.toLowerCase());
+
+const sortCollection = (collection) => collection
+  .sort((firstElement, secondElement) => firstElement.value - secondElement.value);
+
+// ? Preparation for a script for sending messages to the server
+// const getFormatUserTitleInput = (inputTarget) => {
+//   return inputTarget.value = inputTarget.value.replace(/ +/g, ' ').trim();
+// };
 
 export {
   getRandomInclusive,
   shuffleArray,
   getOrderNumbersArray,
   getRandomArrayElement,
-  getRandomKey,
+  getRandomObjectKey,
   getUniqueArray,
   clearElement,
   syncOptionsHandler,
   disabledAttrHandler,
   getIndexNumeralDeclination,
-  getArrayLowerCase
+  getArrayElementsToLowerCase,
+  sortCollection
 };

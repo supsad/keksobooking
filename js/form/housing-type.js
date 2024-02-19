@@ -1,14 +1,16 @@
 import {TypeMinPrices} from '../data.js';
 
 const Price = {
-  MAX_LENGTH: 1000000,
+  MIN: 0,
+  MAX: 1000000,
   REQUIRED: true,
 };
 
 const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 
-priceElement.max = Price.MAX_LENGTH;
+priceElement.min = Price.MIN;
+priceElement.max = Price.MAX;
 priceElement.required = Price.REQUIRED;
 
 const syncValue = () => {
@@ -27,4 +29,4 @@ const syncValue = () => {
   }
 };
 
-export {typeElement as houseType, syncValue};
+export {typeElement, syncValue};

@@ -2,7 +2,7 @@ import {
   getOrderNumbersArray,
   getRandomArrayElement,
   getRandomInclusive,
-  getRandomKey,
+  getRandomObjectKey,
   getUniqueArray,
   shuffleArray
 } from './util.js';
@@ -126,7 +126,7 @@ const generateRandomOffer = () => {
   return {
     title: getRandomArrayElement(TITLES_OFFER),
     price: getRandomInclusive(Price.MIN, Price.MAX),
-    type: getRandomKey(OfferTypes).toLowerCase(),
+    type: getRandomObjectKey(OfferTypes).toLowerCase(),
     rooms: getRandomInclusive(NumberRooms.MIN, NumberRooms.MAX),
     guests: getRandomInclusive(NumberGuests.MIN, NumberGuests.MAX),
     checkin: getRandomArrayElement(TIME_CHECK_IN_OUT),

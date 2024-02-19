@@ -1,5 +1,16 @@
 import {disabledAttrHandler} from '../util.js';
-import {houseType, onSync, syncValue, timeinSelect, timeoutSelect} from '../form/index.js';
+import {
+  capacitySelect,
+  houseType,
+  onSync,
+  onValidTitle,
+  roomNumberSelect,
+  syncPrice,
+  syncRoomsCapacityHandler,
+  timeinSelect,
+  timeoutSelect,
+  titleInput
+} from '../form/index.js';
 
 const Mode = {
   INACTIVE: 'inactive',
@@ -18,7 +29,8 @@ const ClassMethod = {
 
 const updateEventListeners = (shouldAddEvent, elements) => {
   const method = shouldAddEvent ? EventMethod.ADD : EventMethod.REMOVE;
-  houseType[method]('change', syncValue);
+  houseType[method]('change', syncPrice);
+  titleInput[method]('input', onValidTitle);
   elements.forEach(element => element[method]('change', onSync));
 };
 
@@ -45,14 +57,15 @@ const toggleInteractiveElements = (mode, forms) => {
 const renderInteractiveElements = (mode, forms) => {
   updateEventListeners(
     mode === Mode.ACTIVE,
-    [timeinSelect, timeoutSelect],
+    [timeinSelect, timeoutSelect, roomNumberSelect, capacitySelect],
   );
   toggleClass(mode, forms);
   toggleInteractiveElements(mode, forms);
 
   if (mode === Mode.ACTIVE) {
-    // * when switching to active mode, we also want to call syncValue
-    syncValue();
+    // * when switching to active mode, we also want to call sync functions
+    syncPrice();
+    syncRoomsCapacityHandler(roomNumberSelect, capacitySelect);
   }
 };
 

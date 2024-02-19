@@ -1,12 +1,18 @@
-.DS_Store
+# Dev
+.vscode/
 .idea
+node_modules/
+*.sublime*
+npm-debug.log*
+*.http
+
+# Build
+build/
+
+# Other
+.DS_Store
 *.ai
 *.log
 *.pdf
 *.psd
-*.sublime*
-build/
-node_modules/
-npm-debug.log*
 Thumbs.db
-.vscode/

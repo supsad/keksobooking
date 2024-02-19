@@ -8,11 +8,11 @@ const TimeStringTemplates = {
   CHECK_OUT: 'Выезд',
 };
 
-const isCheckInOutCorrect = (templates, value) => templates.some((element) => element === value);
+const isCheckInOutValuesCorrect = (template, value) => template.some((element) => element === value);
 
-const getTimeString = (timeValues, stringTemplates, checkoutSwitch = false) => {
+const getTimeString = (timeValues, stringsTemplate, checkoutSwitch = false) => {
   const [checkinValue, checkoutValue] = timeValues;
-  const {CHECK_IN: checkinTemplate, CHECK_OUT: checkoutTemplate} = stringTemplates;
+  const {CHECK_IN: checkinTemplate, CHECK_OUT: checkoutTemplate} = stringsTemplate;
 
   let string = checkinTemplate;
   let timeValue = checkinValue;
@@ -22,10 +22,7 @@ const getTimeString = (timeValues, stringTemplates, checkoutSwitch = false) => {
     timeValue = checkoutValue;
   }
 
-  // ? test
-  // timeValue = '15:00';
-
-  if (isCheckInOutCorrect(TIME_CHECK_IN_OUT, timeValue)) {
+  if (isCheckInOutValuesCorrect(TIME_CHECK_IN_OUT, timeValue)) {
     return `${string} после ${timeValue}`;
   }
 
