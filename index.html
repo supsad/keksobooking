@@ -80,25 +80,32 @@
     <form class="ad-form" action="https://23.javascript.htmlacademy.pro/keksobooking" method="post"
           enctype="multipart/form-data" autocomplete="off">
       <fieldset class="ad-form-header">
-        <legend class="ad-form-header__title"
-                accept="image/apng,
-                  image/jpeg,
-                  image/png,
-                  image/svg+xml,
-                  image/webp">
-          Ваша фотография (для карты)
-        </legend>
+        <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
         <div class="ad-form-header__upload">
           <div class="ad-form-header__preview">
             <img src="img/muffin-grey.svg" alt="Аватар пользователя" width="40" height="44">
           </div>
           <div class="ad-form__field">
-            <input type="file" id="avatar" name="avatar" class="ad-form-header__input visually-hidden">
-            <label class="ad-form-header__drop-zone" for="avatar">Загрузить<br>фото...</label>
+            <input type="file"
+                   id="avatar"
+                   name="avatar"
+                   class="ad-form-header__input visually-hidden"
+                   accept="image/apng,
+                           image/jpeg,
+                           image/png,
+                           image/svg+xml,
+                           image/webp">
+            <label class="ad-form-header__drop-zone" for="avatar">
+              Загрузить
+              <br>
+              фото...
+            </label>
           </div>
-          <p class="ad-form-header__info">Заполните все обязательные поля, назначьте цену, загрузите аватар и фото
+          <p class="ad-form-header__info">
+            Заполните все обязательные поля, назначьте цену, загрузите аватар и фото
             жилья. Придумайте интересное описание. Оно сделает объявление более живым и привлекательным. Получившееся
-            объявление должно давать гостям полное представление о вашем жилье.</p>
+            объявление должно давать гостям полное представление о вашем жилье.
+          </p>
         </div>
       </fieldset>
       <fieldset class="ad-form__element ad-form__element--wide">
@@ -194,7 +201,11 @@
                      image/svg+xml,
                      image/webp"
                    required>
-            <label for="images" class="ad-form__drop-zone">Загрузить<br>фото...</label>
+            <label for="images" class="ad-form__drop-zone">
+              Загрузить
+              <br>
+              фото...
+            </label>
           </div>
           <div class="ad-form__photo"></div>
         </div>
@@ -213,15 +224,25 @@
     <a class="copyright__link copyright__link--image" href="https://htmlacademy.ru/intensive/javascript">
       <img src="img/htmla-logo.svg" width="130" height="45" alt="HTML Academy" class="copyright__logo">
     </a>
-    <p>Сделано в <a class="copyright__link copyright__link--text" href="https://htmlacademy.ru/intensive/javascript">HTMLAcademy</a>
+    <p>Сделано в
+      <a class="copyright__link copyright__link--text" href="https://htmlacademy.ru/intensive/javascript">
+        HTMLAcademy
+      </a>
     </p>
   </div>
   <ul class="footer__contacts contacts">
-    <li><a href="https://twitter.com/htmlacademy_ru" class="contacts__link contacts__link--twitter">Twitter</a></li>
-    <li><a href="https://www.instagram.com/htmlacademy/" class="contacts__link contacts__link--instagram">Instagtam</a>
+    <li>
+      <a href="https://twitter.com/htmlacademy_ru" class="contacts__link contacts__link--twitter">Twitter</a>
     </li>
-    <li><a href="https://www.facebook.com/htmlacademy" class="contacts__link contacts__link--facebook">Facebook</a></li>
-    <li><a href="https://vk.com/htmlacademy" class="contacts__link contacts__link--vk">VK</a></li>
+    <li>
+      <a href="https://www.instagram.com/htmlacademy/" class="contacts__link contacts__link--instagram">Instagtam</a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/htmlacademy" class="contacts__link contacts__link--facebook">Facebook</a>
+    </li>
+    <li>
+      <a href="https://vk.com/htmlacademy" class="contacts__link contacts__link--vk">VK</a>
+    </li>
   </ul>
 </footer>
 
@@ -238,9 +259,7 @@
     <h4 class="popup__type">Квартира</h4>
     <p class="popup__text popup__text--capacity">2 комнаты для 3 гостей</p>
     <p class="popup__text popup__text--time">Заезд после 14:00, выезд до 10:00</p>
-    <p class="popup__text popup__text--warning">
-      Для получения информации свяжитесь с владельцем.
-    </p>
+    <p class="popup__text popup__text--warning">Для получения информации свяжитесь с владельцем.</p>
     <ul class="popup__features">
       <li class="popup__feature popup__feature--wifi"></li>
       <li class="popup__feature popup__feature--dishwasher"></li>
@@ -262,7 +281,10 @@
 <!-- Сообщение об успешном создании объявления -->
 <template id="success">
   <div class="success">
-    <p class="success__message">Ваше объявление<br>успешно размещено!</p>
+    <p class="success__message">
+      Ваше объявление
+      <br>
+      успешно размещено!</p>
   </div>
 </template>
 
