@@ -1,4 +1,4 @@
-import {OfferTypes} from '../data.js';
+import {OfferTypes} from '../test-data.js';
 import {clearElement} from '../util.js';
 import {getFormatStringCapacity} from './format-capacity.js';
 import {getFormatStringTime} from './format-time.js';

@@ -1,4 +1,4 @@
-import {advertisements, LatitudeX, LongitudeY, TokyoCoordinates} from '../data.js';
+import {advertisements, LatitudeX, LongitudeY, TokyoCoordinates} from '../test-data.js';
 import {getNewCard} from './popup-card.js';
 import {forms, renderInactiveInterface, renderInteractiveElements} from '../render-page/index.js';
 

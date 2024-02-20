@@ -1,4 +1,4 @@
-import {TypeMinPrices} from '../data.js';
+import {TypeMinPrices} from '../test-data.js';
 
 const Price = {
   MIN: 0,

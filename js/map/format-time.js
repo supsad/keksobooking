@@ -1,4 +1,4 @@
-import {TIME_CHECK_IN_OUT} from '../data.js';
+import {TIME_CHECK_IN_OUT} from '../test-data.js';
 
 const TIME_MESSAGE = 'Данные о въезде и выезде не удалось получить.';
 
