@@ -9,13 +9,17 @@ const Price = {
 const typeElement = document.querySelector('#type');
 const priceElement = document.querySelector('#price');
 
-priceElement.min = Price.MIN;
-priceElement.max = Price.MAX;
-priceElement.required = Price.REQUIRED;
+const changePriceAttr = ({min, max, isRequired}) => {
+  priceElement.min = min;
+  priceElement.max = max;
+  priceElement.required = isRequired;
+};
 
 const syncValue = () => {
   let selectedType = typeElement.options[typeElement.selectedIndex].value.toUpperCase();
   const bungalowKey = Object.keys(TypeMinPrices).find((key) => key === 'BUNGALOW');
+
+  changePriceAttr(Price);
 
   // * 0 is not displayed, so it is converted to text
   if (selectedType === bungalowKey) {
