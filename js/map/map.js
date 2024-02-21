@@ -1,6 +1,6 @@
 import {advertisements, LatitudeX, LongitudeY, TokyoCoordinates} from '../test-data.js';
 import {getNewCard} from './popup-card.js';
-import {forms, renderInactiveInterface, renderInteractiveElements} from '../render-page/index.js';
+import {forms, Mode, renderInteractiveElements} from '../render-page/index.js';
 
 const MapSettings = {
   ZOOM: 12,
@@ -20,66 +20,69 @@ const AdvertisementPin = {
 const address = document.querySelector('#address');
 
 const onMapLoad = () => {
-  document.removeEventListener('DOMContentLoaded', renderInactiveInterface);
-  renderInteractiveElements('active', forms);
+  renderInteractiveElements(Mode.ACTIVE, forms);
 
   address.readOnly = true;
   address.value = `${TokyoCoordinates.LATITUDE_X}, ${TokyoCoordinates.LONGITUDE_Y}`;
 };
 
-const map = L.map('map-canvas')
-  .on('load', onMapLoad)
-  .setView({
-    lat: TokyoCoordinates.LATITUDE_X,
-    lng: TokyoCoordinates.LONGITUDE_Y,
-  }, MapSettings.ZOOM);
+const getMapTile = () => {
+  return L.tileLayer(
+    'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
+    {
+      foo: 'bar',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  );
+};
 
-const mapTile = L.tileLayer(
-  'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
-  {
-    foo: 'bar',
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-);
+const getMapCanvas = (tile) => {
+  const map = L.map('map-canvas')
+    .on('load', onMapLoad)
+    .setView({
+      lat: TokyoCoordinates.LATITUDE_X,
+      lng: TokyoCoordinates.LONGITUDE_Y,
+    }, MapSettings.ZOOM);
 
-mapTile.addTo(map);
+  tile.addTo(map);
 
-const mainPinIcon = L.icon({
-  iconUrl: '/img/main-pin.svg',
-  iconSize: [MainPin.WIDTH, MainPin.HEIGHT],
-  iconAnchor: [(MainPin.WIDTH / 2), MainPin.HEIGHT],
-});
+  return map;
+};
 
-const mainPinMarker = L.marker(
-  {
-    lat: TokyoCoordinates.LATITUDE_X,
-    lng: TokyoCoordinates.LONGITUDE_Y,
-  },
-  {
-    draggable: true,
-    icon: mainPinIcon,
-    zIndexOffset: MainPin.Z_INDEX_OFFSET,
-    riseOnHover: true,
-  },
-);
+const getMainPin = () => {
+  const mainPinIcon = L.icon({
+    iconUrl: '/img/main-pin.svg',
+    iconSize: [MainPin.WIDTH, MainPin.HEIGHT],
+    iconAnchor: [(MainPin.WIDTH / 2), MainPin.HEIGHT],
+  });
 
-mainPinMarker.addTo(map);
+  return L.marker(
+    {
+      lat: TokyoCoordinates.LATITUDE_X,
+      lng: TokyoCoordinates.LONGITUDE_Y,
+    },
+    {
+      draggable: true,
+      icon: mainPinIcon,
+      zIndexOffset: MainPin.Z_INDEX_OFFSET,
+      riseOnHover: true,
+    },
+  );
+};
 
-mainPinMarker.on('moveend', (evt) => {
+const onDraggableMainPin = (evt) => {
   const { lat, lng } = evt.target.getLatLng();
   address.value = `${lat.toFixed(LatitudeX.DECIMAL)}, ${lng.toFixed(LongitudeY.DECIMAL)}`;
-});
+};
 
-advertisements.forEach((advertisement) => {
-  const {x,  y} = advertisement.location;
-
+const getAdvertisementPins = ({x, y}) => {
   const pinIcon = L.icon({
     iconUrl: '/img/pin.svg',
     iconSize: [AdvertisementPin.WIDTH, AdvertisementPin.HEIGHT],
     iconAnchor: [(AdvertisementPin.WIDTH / 2), AdvertisementPin.HEIGHT],
   });
 
-  const pinMarker = L.marker(
+  return L.marker(
     {
       lat: x,
       lng: y,
@@ -88,13 +91,28 @@ advertisements.forEach((advertisement) => {
       icon: pinIcon,
     },
   );
+};
 
-  pinMarker
-    .addTo(map)
-    .bindPopup(
-      getNewCard(advertisement),
-      {
-        keepInView: true,
-      },
-    );
-});
+const getAdvertisements = (map, cb) => {
+  advertisements.forEach((advertisement) => {
+    const pinMarker = cb(advertisement.location);
+
+    pinMarker
+      .addTo(map)
+      .bindPopup(
+        getNewCard(advertisement),
+        {
+          keepInView: true,
+        },
+      );
+  });
+};
+
+export {
+  getMapTile,
+  getMapCanvas,
+  getMainPin,
+  getAdvertisementPins,
+  getAdvertisements,
+  onDraggableMainPin
+}

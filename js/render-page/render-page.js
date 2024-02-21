@@ -69,4 +69,4 @@ const renderInteractiveElements = (mode, forms) => {
   }
 };
 
-export {renderInteractiveElements};
+export {Mode, renderInteractiveElements};
