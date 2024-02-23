@@ -81,54 +81,53 @@ const getWarningElement = (element) => {
   return element.textContent;
 };
 
-const getCardElement = (element, property, advertisementKey) => {
+const setCardElement = (element, property, advertisementKey) => {
   clearElement(element);
 
-  switch (advertisementKey) {
-    case 'avatar':
-      element.src = property;
-      break;
+  if (property) {
+    if (property === 'warning') {
+      getWarningElement(element);
+      return;
+    }
 
-    case 'price':
-      element.insertAdjacentHTML('beforeend', `${property} ${PRICE_PER_NIGHT}`);
-      break;
+    switch (advertisementKey) {
+      case 'avatar':
+        element.src = property;
+        return;
 
-    case 'type':
-      element.textContent = addCardType(property);
-      break;
+      case 'price':
+        element.insertAdjacentHTML('beforeend', `${property} ${PRICE_PER_NIGHT}`);
+        return;
 
-    case 'capacity':
-      element.textContent = getFormatStringCapacity(element, property, WarningTemplates.UNKNOWN);
-      capacityString = element.textContent;
-      break;
+      case 'type':
+        element.textContent = addCardType(property);
+        return;
 
-    case 'time':
-      element.textContent = getFormatStringTime(element, property, WarningTemplates.UNKNOWN);
-      timeString = element.textContent;
-      break;
+      case 'capacity':
+        element.textContent = getFormatStringCapacity(element, property, WarningTemplates.UNKNOWN);
+        capacityString = element.textContent;
+        return;
 
-    case 'features':
-      addCardFeatures(element, property);
-      break;
+      case 'time':
+        element.textContent = getFormatStringTime(element, property, WarningTemplates.UNKNOWN);
+        timeString = element.textContent;
+        return;
 
-    case 'photos':
-      addCardPhotos(element, property);
-      break;
+      case 'features':
+        addCardFeatures(element, property);
+        return;
 
-    default:
-      element.textContent = property;
-      break;
+      case 'photos':
+        addCardPhotos(element, property);
+        return;
+
+      default:
+        element.textContent = property;
+        return;
+    }
   }
 
-  if (property === 'warning') {
-    getWarningElement(element);
-  }
-
-  if (!property) {
-    return element.remove();
-  }
-
-  return null;
+  element.remove();
 };
 
 const getUserSelects = (parentObject, comparableObjectKey, cardTemplate) => {
@@ -143,7 +142,7 @@ const getUserSelects = (parentObject, comparableObjectKey, cardTemplate) => {
 
   const element = cardTemplate.querySelector(elementClass);
 
-  return getCardElement(element, [firstNumber, secondNumber], comparableObjectKey);
+  setCardElement(element, [firstNumber, secondNumber], comparableObjectKey);
 };
 
 const getNewCard = ({author, offer}) => {
@@ -162,7 +161,7 @@ const getNewCard = ({author, offer}) => {
 
     const element = newCard.querySelector(value);
 
-    getCardElement(element, property, key);
+    setCardElement(element, property, key);
   });
 
   return newCard;

@@ -96,6 +96,11 @@ const getArrayElementsToLowerCase = (strings) => strings.map((element) => elemen
 const sortCollection = (collection) => collection
   .sort((firstElement, secondElement) => firstElement.value - secondElement.value);
 
+const getRandomArrayInterval = (array, maxCount) => {
+  const randomIndex = getRandomInclusive(0, array.length - maxCount);
+  return array.slice(randomIndex, randomIndex + maxCount);
+};
+
 // ? Preparation for a script for sending messages to the server
 // const getFormatUserTitleInput = (inputTarget) => {
 //   return inputTarget.value = inputTarget.value.replace(/ +/g, ' ').trim();
@@ -113,5 +118,6 @@ export {
   disabledAttrHandler,
   getIndexNumeralDeclination,
   getArrayElementsToLowerCase,
-  sortCollection
+  sortCollection,
+  getRandomArrayInterval
 };

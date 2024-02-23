@@ -1,4 +1,4 @@
-import {advertisements, LatitudeX, LongitudeY, TokyoCoordinates} from '../test-data.js';
+import {LatitudeX, LongitudeY, TokyoCoordinates} from '../test-data.js';
 import {getNewCard} from './popup-card.js';
 import {forms, Mode, renderInteractiveElements} from '../render-page/index.js';
 
@@ -16,6 +16,8 @@ const AdvertisementPin = {
   WIDTH: 40,
   HEIGHT: 40,
 };
+
+// TODO Сделать колбеки? Перенести переменные в отдельные функции?
 
 const address = document.querySelector('#address');
 
@@ -75,7 +77,7 @@ const onDraggableMainPin = (evt) => {
   address.value = `${lat.toFixed(LatitudeX.DECIMAL)}, ${lng.toFixed(LongitudeY.DECIMAL)}`;
 };
 
-const getAdvertisementPins = ({x, y}) => {
+const getAdvertisementPins = ({lat: x, lng: y}) => {
   const pinIcon = L.icon({
     iconUrl: '/img/pin.svg',
     iconSize: [AdvertisementPin.WIDTH, AdvertisementPin.HEIGHT],
@@ -93,9 +95,12 @@ const getAdvertisementPins = ({x, y}) => {
   );
 };
 
-const getAdvertisements = (map, cb) => {
+// TODO Карточки брать из DocumentFragment, чтобы отрисовать их разом
+
+const getAdvertisements = (advertisements, map, getPin) => {
   advertisements.forEach((advertisement) => {
-    const pinMarker = cb(advertisement.location);
+    console.log(advertisement);
+    const pinMarker = getPin(advertisement.location);
 
     pinMarker
       .addTo(map)

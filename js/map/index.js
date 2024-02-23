@@ -7,7 +7,7 @@ import {
   onDraggableMainPin
 } from './map.js';
 
-const renderMap = () => {
+const renderMap = (data) => {
   const mapTile = getMapTile();
   const map = getMapCanvas(mapTile);
 
@@ -15,7 +15,7 @@ const renderMap = () => {
   mainPinMarker.addTo(map);
   mainPinMarker.on('moveend', onDraggableMainPin);
 
-  getAdvertisements(map, getAdvertisementPins);
+  getAdvertisements(data, map, getAdvertisementPins);
 };
 
 export {renderMap};
