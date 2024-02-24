@@ -1,18 +1,17 @@
 const ADVERTISEMENTS_URL = 'https://23.javascript.htmlacademy.pro/keksobooking/data';
 
-const getDataAdvertisements = async (onSuccess) => {
+const getDataAdvertisements = async (onSuccess, onFail) => {
   const response = await fetch(ADVERTISEMENTS_URL);
 
   try {
     if (response.ok) {
       const data = await response.json();
-      console.log(data);
       await onSuccess(data);
     }
   } catch (err) {
-    console.log(err);
-    throw new Error(`${response.status} ${response.statusText}`);
+    await onFail(err, response);
   }
 };
 
 export {getDataAdvertisements};
+export {renderErrorMessage} from './error.js';

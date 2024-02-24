@@ -1,9 +1,10 @@
-import {getDataAdvertisements} from './server/index.js';
-import {Mode, renderInactiveInterface} from './render-page/index.js';
+import {getDataAdvertisements, renderErrorMessage} from './server/index.js';
 import {renderMap} from './map/index.js';
 import {getRandomArrayInterval} from './util.js';
 
 /*
+TODO 1. Все элементы после ошибки блокируются! Поправить!
+
 TODO 2. Добавить обработку возможных ошибок при загрузке.
         * Если при загрузке данных с сервера произошла ошибка запроса, нужно показать сообщение.
         * Дизайн блока придумать самостоятельно.
@@ -51,18 +52,16 @@ TODO 7. Переименовать колбэки на адекватные на
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
 
 const init = () => {
-  try {
-    getDataAdvertisements((advertisements) => {
-      renderMap(
-        getRandomArrayInterval(advertisements, SIMILAR_ADVERTISEMENTS_COUNT),
-      );
-      console.log('server data:', advertisements);
-    });
-  } catch (err) {
-    renderInactiveInterface(Mode.INACTIVE);
+  getDataAdvertisements((advertisements) => {
+    renderMap(
+      getRandomArrayInterval(advertisements, SIMILAR_ADVERTISEMENTS_COUNT),
+    );
+    console.log('server data:', advertisements);
+  }, (err, response) => {
+    renderErrorMessage(document.querySelector('main'));
     console.log(err);
-    throw new Error ('Загрузка страницы не удалась!');
-  }
+    throw new Error(`Загрузка данных не удалась!\n${response.status} ${response.statusText}`);
+  });
 };
 
 document.addEventListener('DOMContentLoaded', init);

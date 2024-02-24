@@ -4,13 +4,14 @@ const adForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
 const forms = [adForm, mapFilters];
 
-const renderInactiveInterface = ({inactive, active}) => {
-  if (active === Mode.ACTIVE) {
-    renderInteractiveElements(active, forms);
+const renderUI = (mode) => {
+  if (mode === Mode.ACTIVE) {
+    renderInteractiveElements(mode, forms);
     return;
   }
 
-  renderInteractiveElements(inactive, forms);
+  renderInteractiveElements(mode, forms);
 };
 
-export {forms, Mode, renderInteractiveElements, renderInactiveInterface};
+export {forms, renderUI}
+export {Mode, renderInteractiveElements} from './render-page.js';
