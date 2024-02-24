@@ -1,4 +1,3 @@
-import {OfferTypes} from '../test-data.js';
 import {clearElement} from '../util.js';
 import {getFormatStringCapacity} from './format-capacity.js';
 import {getFormatStringTime} from './format-time.js';
@@ -6,6 +5,14 @@ import {getWarningMessage, WarningTemplates} from './warning-message.js';
 
 const PRICE_SYMBOL = '₽';
 const PRICE_PER_NIGHT = `<span>${PRICE_SYMBOL}/ночь</span>`;
+
+const OfferTypes = {
+  FLAT: 'Квартира',
+  BUNGALOW: 'Бунгало',
+  HOTEL: 'Отель',
+  HOUSE: 'Дом',
+  PALACE: 'Дворец',
+};
 
 const PhotoOptions = {
   WIDTH: 45,

@@ -1,6 +1,22 @@
-import {LatitudeX, LongitudeY, TokyoCoordinates} from '../test-data.js';
 import {getNewCard} from './popup-card.js';
-import {forms, Mode, renderInteractiveElements} from '../render-page/index.js';
+import {forms, Mode, renderUI} from '../render-page/index.js';
+
+const TokyoCoordinates = {
+  LATITUDE_X: 35.68950,
+  LONGITUDE_Y: 139.69200,
+};
+
+const LatitudeX = {
+  MIN: 35.65000,
+  MAX: 35.70000,
+  DECIMAL: 5,
+};
+
+const LongitudeY = {
+  MIN: 139.70000,
+  MAX: 139.80000,
+  DECIMAL: 5,
+};
 
 const MapSettings = {
   ZOOM: 12,
@@ -22,7 +38,7 @@ const AdvertisementPin = {
 const address = document.querySelector('#address');
 
 const onMapLoad = () => {
-  renderInteractiveElements(Mode.ACTIVE, forms);
+  renderUI(Mode.ACTIVE, forms);
 
   address.readOnly = true;
   address.value = `${TokyoCoordinates.LATITUDE_X}, ${TokyoCoordinates.LONGITUDE_Y}`;
@@ -99,7 +115,6 @@ const getAdvertisementPins = ({lat: x, lng: y}) => {
 
 const getAdvertisements = (advertisements, map, getPin) => {
   advertisements.forEach((advertisement) => {
-    console.log(advertisement);
     const pinMarker = getPin(advertisement.location);
 
     pinMarker

@@ -1,4 +1,10 @@
-import {TypeMinPrices} from '../test-data.js';
+const TypeMinPrices = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
+};
 
 const Price = {
   MIN: 0,
