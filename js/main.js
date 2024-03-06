@@ -47,20 +47,21 @@ TODO 6. Обработать нажатие на кнопку сброса.
         * Обработать похожим образом на пункт 4
 
 TODO 7. Переименовать колбэки на адекватные названия
+
+TODO 8. Сделать init синхронной функцией и добавить отдельно асинхронную функцию
 */
 
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
 
-const init = () => {
-  getDataAdvertisements((advertisements) => {
+const init = async () => {
+  await getDataAdvertisements((advertisements) => {
     renderMap(
       getRandomArrayInterval(advertisements, SIMILAR_ADVERTISEMENTS_COUNT),
     );
     console.log('server data:', advertisements);
-  }, (err, response) => {
+  }, (err) => {
     renderErrorMessage(document.querySelector('main'));
-    console.log(err);
-    throw new Error(`Загрузка данных не удалась!\n${response.status} ${response.statusText}`);
+    console.error(err);
   });
 };
 

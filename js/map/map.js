@@ -1,138 +1,114 @@
-import {getNewCard} from './popup-card.js';
 import {forms, Mode, renderUI} from '../render-page/index.js';
 
-const TokyoCoordinates = {
-  LATITUDE_X: 35.68950,
-  LONGITUDE_Y: 139.69200,
-};
+const COORDINATES_DECIMAL = 5;
 
-const LatitudeX = {
-  MIN: 35.65000,
-  MAX: 35.70000,
-  DECIMAL: 5,
-};
-
-const LongitudeY = {
-  MIN: 139.70000,
-  MAX: 139.80000,
-  DECIMAL: 5,
-};
-
-const MapSettings = {
-  ZOOM: 12,
-};
-
-const MainPin = {
-  WIDTH: 52,
-  HEIGHT: 52,
-  Z_INDEX_OFFSET: 1000,
-};
-
-const AdvertisementPin = {
-  WIDTH: 40,
-  HEIGHT: 40,
-};
-
-// TODO Сделать колбеки? Перенести переменные в отдельные функции?
+const ErrorMessages = {
+  TILE_ERROR: `Не удалось загрузить юридическое лицо, предоставляющее исходные данные карты!\n
+               Отображение блока карты невозможно по лицензионному соглашению распространителя`,
+  MAP_ERROR: 'Не удалось загрузить карту!',
+  MAIN_PIN_ERROR: 'Не удалось загрузить главную метку для карты!',
+  PIN_ERROR: 'Не удалось загрузить метки карты!',
+}
 
 const address = document.querySelector('#address');
 
-const onMapLoad = () => {
+const onMapLoad = ([lat, lng]) => {
   renderUI(Mode.ACTIVE, forms);
 
   address.readOnly = true;
-  address.value = `${TokyoCoordinates.LATITUDE_X}, ${TokyoCoordinates.LONGITUDE_Y}`;
+  address.value = `${lat}, ${lng}`;
 };
 
 const getMapTile = () => {
-  return L.tileLayer(
-    'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
-    {
-      foo: 'bar',
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  );
+  try {
+    return L.tileLayer(
+      'https://tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}',
+      {
+        foo: 'bar',
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      },
+    );
+  } catch (err) {
+    throw new Error(`${ErrorMessages.TILE_ERROR}\n${err.name} ${err.message}`);
+  }
 };
 
-const getMapCanvas = (tile) => {
-  const map = L.map('map-canvas')
-    .on('load', onMapLoad)
-    .setView({
-      lat: TokyoCoordinates.LATITUDE_X,
-      lng: TokyoCoordinates.LONGITUDE_Y,
-    }, MapSettings.ZOOM);
+const getMapCanvas = (coordinates, zoom) => {
+  try {
+    const [lat, lng] = Object.values(coordinates);
 
-  tile.addTo(map);
-
-  return map;
+    return L.map('map-canvas')
+      .on('load', () => onMapLoad(Object.values(coordinates)))
+      .setView({
+        lat: lat,
+        lng: lng,
+      }, zoom);
+  } catch (err) {
+    throw new Error(`${ErrorMessages.MAP_ERROR}\n${err.name} ${err.message}`);
+  }
 };
 
-const getMainPin = () => {
-  const mainPinIcon = L.icon({
-    iconUrl: '/img/main-pin.svg',
-    iconSize: [MainPin.WIDTH, MainPin.HEIGHT],
-    iconAnchor: [(MainPin.WIDTH / 2), MainPin.HEIGHT],
+const getPinIcon = (path = '/img/pin.svg', {WIDTH, HEIGHT}) => {
+  return L.icon({
+    iconUrl: path,
+    iconSize: [WIDTH, HEIGHT],
+    iconAnchor: [(WIDTH / 2), HEIGHT],
   });
-
-  return L.marker(
-    {
-      lat: TokyoCoordinates.LATITUDE_X,
-      lng: TokyoCoordinates.LONGITUDE_Y,
-    },
-    {
-      draggable: true,
-      icon: mainPinIcon,
-      zIndexOffset: MainPin.Z_INDEX_OFFSET,
-      riseOnHover: true,
-    },
-  );
 };
 
-const onDraggableMainPin = (evt) => {
-  const { lat, lng } = evt.target.getLatLng();
-  address.value = `${lat.toFixed(LatitudeX.DECIMAL)}, ${lng.toFixed(LongitudeY.DECIMAL)}`;
+const isMainPin = (type, verifiableType) => type.toLowerCase() === verifiableType.toLowerCase();
+
+// TODO нужен ли set?
+
+const setMainPin = (pin, coordinates, Settings) => {
+  pin.setLatLng(Object.values(coordinates));
+  pin.setIcon(getPinIcon('/img/main-pin.svg', Settings));
+  pin.setZIndexOffset(Settings.Z_INDEX_OFFSET);
+  pin.options.draggable = true;
+  pin.options.riseOnHover = true;
 };
 
-const getAdvertisementPins = ({lat: x, lng: y}) => {
-  const pinIcon = L.icon({
-    iconUrl: '/img/pin.svg',
-    iconSize: [AdvertisementPin.WIDTH, AdvertisementPin.HEIGHT],
-    iconAnchor: [(AdvertisementPin.WIDTH / 2), AdvertisementPin.HEIGHT],
-  });
+// TODO Переделать исключения для получения пина
 
-  return L.marker(
-    {
-      lat: x,
-      lng: y,
-    },
-    {
-      icon: pinIcon,
-    },
-  );
+const getPin = (coordinates, type, PinsSettings) => {
+  try {
+    const [lat, lng] = Object.values(coordinates);
+    const {Main, Advertisement: Adv} = PinsSettings;
+    const pin = L.marker(
+      {
+        lat: lat,
+        lng: lng,
+      },
+      {
+        icon: getPinIcon('/img/pin.svg', Adv),
+      },
+    );
+
+    try {
+      if (isMainPin(type, Main.TYPE)) {
+        setMainPin(pin, coordinates, Main);
+      }
+    } catch (err) {
+      throw new Error(`${ErrorMessages.MAIN_PIN_ERROR}\n${err.name} ${err.message}`);
+    }
+
+    return pin;
+  } catch (err) {
+    throw new Error(`${ErrorMessages.PIN_ERROR}\n${err.name} ${err.message}`);
+  }
 };
 
-// TODO Карточки брать из DocumentFragment, чтобы отрисовать их разом
-
-const getAdvertisements = (advertisements, map, getPin) => {
-  advertisements.forEach((advertisement) => {
-    const pinMarker = getPin(advertisement.location);
-
-    pinMarker
-      .addTo(map)
-      .bindPopup(
-        getNewCard(advertisement),
-        {
-          keepInView: true,
-        },
-      );
-  });
+const onDraggablePin = (decimals = [COORDINATES_DECIMAL, COORDINATES_DECIMAL]) => {
+  const [latDecimal, lngDecimal] = decimals;
+  return (evt) => {
+    const {lat, lng} = evt.target.getLatLng();
+    address.value = `${lat.toFixed(latDecimal)}, ${lng.toFixed(lngDecimal)}`;
+  };
 };
 
 export {
   getMapTile,
   getMapCanvas,
-  getMainPin,
-  getAdvertisementPins,
-  getAdvertisements,
-  onDraggableMainPin
+  getPin,
+  onDraggablePin
 }
