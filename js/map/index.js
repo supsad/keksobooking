@@ -1,6 +1,6 @@
 import {getMapCanvas, getMapTile, getPin, onDraggablePin} from 'map.js';
 import {getNewCard} from 'popup-card.js';
-import {Forms, Mode, renderUI} from '/js/render-page/index.js';
+import {Forms, Mode, renderErrorAlert, renderUI} from '/js/render-page/index.js';
 
 const Coordinates = {
   Tokyo: {
@@ -43,7 +43,16 @@ const ErrorMessages = {
   MAP_ERROR: 'Страница полностью неактивная и заблокирована из-за ошибки загрузки карты!',
   MAIN_PIN_ERROR: 'Форма объявления отключена из-за ошибки загрузки главной метки!',
   ADV_PIN_ERROR: 'Форма фильтров карты отключена из-за ошибки загрузки меток объявлений на карте!',
-}
+};
+
+const AlertMessages = {
+  ALERT: 'Произошла ошибка!',
+  MAP: 'Страница неактивна! Сайт полностью заблокирован!',
+  MAIN_PIN: 'Форма для заполнения объявления неактивна, но вы можете выбрать отель для заселения.',
+  ADV_PIN: 'Форма фильтров карты отключена и невозможно выбрать отель, ' +
+    'но вы можете заполнить собственное объявления для продажи',
+  TIP: 'Для решения проблемы, попробуйте перезагрузить страницу!',
+};
 
 const renderMainPin = (map) => {
   try {
@@ -55,6 +64,7 @@ const renderMainPin = (map) => {
   } catch (err) {
     const [advForm] = Object.values(Forms);
     renderUI(Mode.INACTIVE, [advForm]);
+    renderErrorAlert(`${AlertMessages.ALERT} ${AlertMessages.MAIN_PIN} ${AlertMessages.TIP}`);
     throw new Error(`${ErrorMessages.MAIN_PIN_ERROR}\n${err.name} ${err.message}`);
   }
 };
@@ -75,6 +85,7 @@ const renderAdvertisements = (map, data) => {
   } catch (err) {
     const [, mapFilters] = Object.values(Forms);
     renderUI(Mode.INACTIVE, [mapFilters]);
+    renderErrorAlert(`${AlertMessages.ALERT} ${AlertMessages.ADV_PIN} ${AlertMessages.TIP}`);
     throw new Error(`${ErrorMessages.ADV_PIN_ERROR}\n${err.name} ${err.message}`);
   }
 };
@@ -88,6 +99,7 @@ const renderMap = () => {
     mapTile.addTo(map);
   } catch (err) {
     renderUI(Mode.INACTIVE, Forms);
+    renderErrorAlert(`${AlertMessages.ALERT} ${AlertMessages.MAP} ${AlertMessages.TIP}`);
     throw new Error(`${ErrorMessages.MAP_ERROR}\n${err.name} ${err.message}`);
   }
 
