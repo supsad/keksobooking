@@ -1,4 +1,4 @@
-import {sortCollection} from '../util.js';
+import {sortCollection} from '/js/util.js';
 
 const fillTargetChangeableListsMap = (targetList) => {
   const targetOptions = targetList.options;

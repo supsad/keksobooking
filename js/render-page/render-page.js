@@ -1,4 +1,4 @@
-import {disabledAttrHandler} from '../util.js';
+import {disabledAttrHandler} from '/js/util.js';
 import {
   capacitySelect,
   houseType,
@@ -10,7 +10,7 @@ import {
   timeinSelect,
   timeoutSelect,
   titleInput
-} from '../form/index.js';
+} from '/js/form/index.js';
 
 const Mode = {
   INACTIVE: 'inactive',

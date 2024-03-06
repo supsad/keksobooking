@@ -101,7 +101,7 @@ const getRandomArrayInterval = (array, maxCount) => {
   return array.slice(randomIndex, randomIndex + maxCount);
 };
 
-// ? Preparation for a script for sending messages to the server
+// ? Preparation for a script for sending messages to the api
 // const getFormatUserTitleInput = (inputTarget) => {
 //   return inputTarget.value = inputTarget.value.replace(/ +/g, ' ').trim();
 // };

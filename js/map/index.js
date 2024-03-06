@@ -1,6 +1,6 @@
-import {getMapCanvas, getMapTile, getPin, onDraggablePin} from './map.js';
-import {Forms, Mode, renderUI} from '../render-page/index.js';
-import {getNewCard} from './popup-card.js';
+import {getMapCanvas, getMapTile, getPin, onDraggablePin} from 'map.js';
+import {getNewCard} from 'popup-card.js';
+import {Forms, Mode, renderUI} from '/js/render-page/index.js';
 
 const Coordinates = {
   Tokyo: {

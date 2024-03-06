@@ -1,7 +1,7 @@
-import {clearElement} from '../util.js';
-import {getFormatStringCapacity} from './format-capacity.js';
-import {getFormatStringTime} from './format-time.js';
-import {getWarningMessage, WarningTemplates} from './warning-message.js';
+import {getFormatStringCapacity} from 'format-capacity.js';
+import {getFormatStringTime} from 'format-time.js';
+import {getWarningMessage, WarningTemplates} from 'warning-message.js';
+import {clearElement} from '/js/util.js';
 
 const PRICE_SYMBOL = '₽';
 const PRICE_PER_NIGHT = `<span>${PRICE_SYMBOL}/ночь</span>`;

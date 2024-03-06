@@ -1,4 +1,4 @@
-import {Forms, Mode, renderUI} from '../render-page/index.js';
+import {Forms, Mode, renderUI} from '/js/render-page/index.js';
 
 const COORDINATES_DECIMAL = 5;
 
@@ -109,9 +109,4 @@ const onDraggablePin = (decimals = [COORDINATES_DECIMAL, COORDINATES_DECIMAL]) =
   };
 };
 
-export {
-  getMapTile,
-  getMapCanvas,
-  getPin,
-  onDraggablePin
-}
+export {getMapTile, getMapCanvas, getPin, onDraggablePin}

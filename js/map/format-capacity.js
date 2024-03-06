@@ -1,4 +1,4 @@
-import {getArrayElementsToLowerCase, getIndexNumeralDeclination} from '../util.js';
+import {getArrayElementsToLowerCase, getIndexNumeralDeclination} from '/js/util.js';
 
 const MAX_ROOMS = 100;
 const CAPACITY_MESSAGE = 'Данные количества комнат и гостей не удалось получить.';

@@ -1,4 +1,4 @@
-import {getIndexNumeralDeclination} from '../util.js';
+import {getIndexNumeralDeclination} from '/js/util.js';
 
 const UserAdvertisementTitle = {
   MIN_TITLE_LENGTH: 30,
