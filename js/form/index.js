@@ -1,4 +1,4 @@
-import {syncRoomsCapacityHandler} from 'input-sync.js';
+import {syncRoomsCapacityHandler} from './input-sync.js';
 import {syncOptionsHandler} from '/js/util.js';
 
 const titleInput = document.querySelector('#title');
@@ -33,6 +33,6 @@ export {
   onSync
 };
 
-export {onValidTitle} from 'validate-title.js';
-export {syncRoomsCapacityHandler} from 'input-sync.js'
-export {typeElement as houseType, syncValue as syncPrice} from 'housing-type.js';
+export {onValidTitle} from './validate-title.js';
+export {syncRoomsCapacityHandler} from './input-sync.js'
+export {typeElement as houseType, syncValue as syncPrice} from './housing-type.js';

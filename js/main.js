@@ -1,5 +1,5 @@
-import {renderAdvertisements, renderMainPin, renderMap} from 'map/index.js';
-import {renderData} from 'render-page/index.js';
+import {renderAdvertisements, renderMainPin, renderMap} from './map/index.js';
+import {renderData} from './render-page/index.js';
 
 /*
 TODO 1. Добавить обработку возможных ошибок при загрузке.

@@ -1,5 +1,5 @@
-import {getMapCanvas, getMapTile, getPin, onDraggablePin} from 'map.js';
-import {getNewCard} from 'popup-card.js';
+import {getMapCanvas, getMapTile, getPin, onDraggablePin} from './map.js';
+import {getNewCard} from './popup-card.js';
 import {Forms, Mode, renderErrorAlert, renderUI} from '/js/render-page/index.js';
 
 const Coordinates = {
