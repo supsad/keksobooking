@@ -46,7 +46,9 @@ const getAlertStyles = (ErrorTemplate) => {
   `;
 };
 
-const renderErrorAlert = (container, message) => {
+const renderErrorAlert = (message) => {
+  const container = document.querySelector('body');
+
   const errorWrapper = document.createElement('div');
   errorWrapper.className = ErrorBlockTemplate.CLASS_WRAPPER;
   errorWrapper.style.cssText = getAlertStyles(ErrorBlockTemplate);
@@ -56,7 +58,7 @@ const renderErrorAlert = (container, message) => {
   errorMessage.textContent = message;
 
   errorWrapper.appendChild(errorMessage);
-  container.insertAdjacentElement('beforebegin', errorWrapper);
+  container.insertAdjacentElement('afterbegin', errorWrapper);
 
   errorMessage.focus();
 

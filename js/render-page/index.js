@@ -19,5 +19,6 @@ const renderUI = (mode, forms) => {
   renderInteractiveElements(mode, forms);
 };
 
-export {Forms, renderUI}
+export {Forms, renderUI};
 export {Mode, renderInteractiveElements} from './render-page.js';
+export {renderErrorAlert} from './error.js';
