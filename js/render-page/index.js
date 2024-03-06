@@ -1,10 +1,16 @@
 import {Mode, renderInteractiveElements} from './render-page.js';
 
-const adForm = document.querySelector('.ad-form');
+const advertisementForm = document.querySelector('.ad-form');
 const mapFilters = document.querySelector('.map__filters');
-const forms = [adForm, mapFilters];
 
-const renderUI = (mode) => {
+const Forms = {
+  form: advertisementForm,
+  filters: mapFilters,
+};
+
+const renderUI = (mode, forms) => {
+  forms = Object.values(forms);
+
   if (mode === Mode.ACTIVE) {
     renderInteractiveElements(mode, forms);
     return;
@@ -13,5 +19,5 @@ const renderUI = (mode) => {
   renderInteractiveElements(mode, forms);
 };
 
-export {forms, renderUI}
+export {Forms, renderUI}
 export {Mode, renderInteractiveElements} from './render-page.js';

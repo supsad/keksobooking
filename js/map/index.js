@@ -1,5 +1,5 @@
 import {getMapCanvas, getMapTile, getPin, onDraggablePin} from './map.js';
-import {forms, Mode, renderUI} from '../render-page/index.js';
+import {Forms, Mode, renderUI} from '../render-page/index.js';
 import {getNewCard} from './popup-card.js';
 
 const Coordinates = {
@@ -39,7 +39,27 @@ const PinsSettings = {
   },
 };
 
-const renderAdvertisements = (data, map) => {
+const ErrorMessages = {
+  MAP_ERROR: 'Страница полностью неактивная и заблокирована из-за ошибки загрузки карты!',
+  MAIN_PIN_ERROR: 'Форма объявления отключена из-за ошибки загрузки главной метки!',
+  ADV_PIN_ERROR: 'Форма фильтров карты отключена из-за ошибки загрузки меток объявлений на карте!',
+}
+
+const renderMainPin = (map) => {
+  try {
+    const mainPinMarker = getPin(Coordinates.Tokyo, PinsSettings.Main.TYPE, PinsSettings);
+    mainPinMarker.addTo(map);
+
+    const [Lat, Lng] = Coordinates.MapArea;
+    mainPinMarker.on('moveend', onDraggablePin([Lat.DECIMAL, Lng.DECIMAL]));
+  } catch (err) {
+    const [advForm] = Object.values(Forms);
+    renderUI(Mode.INACTIVE, [advForm]);
+    throw new Error(`${ErrorMessages.MAIN_PIN_ERROR}\n${err.name} ${err.message}`);
+  }
+};
+
+const renderAdvertisements = (map, data) => {
   try {
     data.forEach((advertisement) => {
       const pinMarker = getPin(advertisement.location, PinsSettings.Advertisement.TYPE, PinsSettings);
@@ -53,27 +73,25 @@ const renderAdvertisements = (data, map) => {
         ).addTo(map);
     });
   } catch (err) {
-    console.error(err);
+    const [, mapFilters] = Object.values(Forms);
+    renderUI(Mode.INACTIVE, [mapFilters]);
+    throw new Error(`${ErrorMessages.ADV_PIN_ERROR}\n${err.name} ${err.message}`);
   }
 };
 
-const renderMap = (data) => {
+const renderMap = () => {
+  let map;
+
   try {
-    const map = getMapCanvas(Coordinates.Tokyo, MapSettings.ZOOM);
+    map = getMapCanvas(Coordinates.Tokyo, MapSettings.ZOOM);
     const mapTile = getMapTile();
     mapTile.addTo(map);
-
-    const mainPinMarker = getPin(Coordinates.Tokyo, PinsSettings.Main.TYPE, PinsSettings);
-    mainPinMarker.addTo(map);
-
-    const [Lat,Lng] = Coordinates.MapArea;
-    mainPinMarker.on('moveend', onDraggablePin([Lat.DECIMAL, Lng.DECIMAL]));
-
-    renderAdvertisements(data, map);
   } catch (err) {
-    console.error(err);
-    renderUI(Mode.INACTIVE, forms);
+    renderUI(Mode.INACTIVE, Forms);
+    throw new Error(`${ErrorMessages.MAP_ERROR}\n${err.name} ${err.message}`);
   }
+
+  return map;
 };
 
-export {renderMap};
+export {renderMap, renderMainPin, renderAdvertisements};

@@ -1,15 +1,14 @@
-import {getDataAdvertisements, renderErrorMessage} from './server/index.js';
-import {renderMap} from './map/index.js';
+import {getDataAdvertisements, renderErrorAlert} from './server/index.js';
+import {renderAdvertisements, renderMainPin, renderMap} from './map/index.js';
 import {getRandomArrayInterval} from './util.js';
 
 /*
-TODO 1. Все элементы после ошибки блокируются! Поправить!
-
 TODO 2. Добавить обработку возможных ошибок при загрузке.
         * Если при загрузке данных с сервера произошла ошибка запроса, нужно показать сообщение.
         * Дизайн блока придумать самостоятельно.
         ? Ошибка загрузки данных влияет на отображение меток и их фильтрацию, но не влияет на отправку формы.
         ? Даже если данные для меток не загрузились, возможность выбрать адрес на карте и отправить форму сохраняется.
+        ! Нужно показывать пользователю разные сообщения при разных ошибках
 
 TODO 3. Добавить обработчик отправки формы, который бы отменял действие формы по умолчанию и отправлял данные формы
         посредством fetch на сервер.
@@ -45,24 +44,28 @@ TODO 5. Если при отправке данных произошла оши�
 
 TODO 6. Обработать нажатие на кнопку сброса.
         * Обработать похожим образом на пункт 4
-
-TODO 7. Переименовать колбэки на адекватные названия
-
-TODO 8. Сделать init синхронной функцией и добавить отдельно асинхронную функцию
 */
 
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
+const ERROR_MESSAGE = 'Произошла ошибка! Загрузка данных для карты прервалась!\n' +
+  'Попробуйте перезагрузить страницу!';
 
-const init = async () => {
+const initData = async (map, renderData) => {
   await getDataAdvertisements((advertisements) => {
-    renderMap(
-      getRandomArrayInterval(advertisements, SIMILAR_ADVERTISEMENTS_COUNT),
+    renderData(
+      map,
+      getRandomArrayInterval(advertisements, SIMILAR_ADVERTISEMENTS_COUNT)
     );
-    console.log('server data:', advertisements);
   }, (err) => {
-    renderErrorMessage(document.querySelector('main'));
     console.error(err);
+    renderErrorAlert(document.querySelector('main'), ERROR_MESSAGE);
   });
+};
+
+const init = () => {
+  const map = renderMap();
+  renderMainPin(map);
+  void initData(map, renderAdvertisements);
 };
 
 document.addEventListener('DOMContentLoaded', init);
