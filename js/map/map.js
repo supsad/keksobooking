@@ -1,10 +1,10 @@
-import {forms, Mode, renderUI} from '../render-page/index.js';
+import {Forms, Mode, renderUI} from '../render-page/index.js';
 
 const COORDINATES_DECIMAL = 5;
 
 const ErrorMessages = {
-  TILE_ERROR: `Не удалось загрузить юридическое лицо, предоставляющее исходные данные карты!\n
-               Отображение блока карты невозможно по лицензионному соглашению распространителя`,
+  TILE_ERROR: 'Не удалось загрузить юридическое лицо, предоставляющее исходные данные карты!\n' +
+    'Отображение блока карты невозможно по лицензионному соглашению распространителя',
   MAP_ERROR: 'Не удалось загрузить карту!',
   MAIN_PIN_ERROR: 'Не удалось загрузить главную метку для карты!',
   PIN_ERROR: 'Не удалось загрузить метки карты!',
@@ -13,7 +13,7 @@ const ErrorMessages = {
 const address = document.querySelector('#address');
 
 const onMapLoad = ([lat, lng]) => {
-  renderUI(Mode.ACTIVE, forms);
+  renderUI(Mode.ACTIVE, Forms);
 
   address.readOnly = true;
   address.value = `${lat}, ${lng}`;
@@ -58,44 +58,47 @@ const getPinIcon = (path = '/img/pin.svg', {WIDTH, HEIGHT}) => {
 
 const isMainPin = (type, verifiableType) => type.toLowerCase() === verifiableType.toLowerCase();
 
-// TODO нужен ли set?
+const getPinMarker = (coordinates, icon) => {
+  const [lat, lng] = Object.values(coordinates);
 
-const setMainPin = (pin, coordinates, Settings) => {
-  pin.setLatLng(Object.values(coordinates));
-  pin.setIcon(getPinIcon('/img/main-pin.svg', Settings));
+  return L.marker(
+    {
+      lat: lat,
+      lng: lng,
+    },
+    {
+      icon: icon,
+    },
+  );
+};
+
+const setMainPin = (pin, Settings) => {
   pin.setZIndexOffset(Settings.Z_INDEX_OFFSET);
   pin.options.draggable = true;
   pin.options.riseOnHover = true;
 };
 
-// TODO Переделать исключения для получения пина
-
 const getPin = (coordinates, type, PinsSettings) => {
-  try {
-    const [lat, lng] = Object.values(coordinates);
-    const {Main, Advertisement: Adv} = PinsSettings;
-    const pin = L.marker(
-      {
-        lat: lat,
-        lng: lng,
-      },
-      {
-        icon: getPinIcon('/img/pin.svg', Adv),
-      },
-    );
+  const {Main, Advertisement: Adv} = PinsSettings;
+  let pin;
 
+  if (isMainPin(type, Main.TYPE)) {
     try {
-      if (isMainPin(type, Main.TYPE)) {
-        setMainPin(pin, coordinates, Main);
-      }
+      pin = getPinMarker(Object.values(coordinates), getPinIcon('/img/main-pin.svg', Main));
+      setMainPin(pin, coordinates, Main);
+      return pin;
     } catch (err) {
       throw new Error(`${ErrorMessages.MAIN_PIN_ERROR}\n${err.name} ${err.message}`);
     }
+  }
 
-    return pin;
+  try {
+    pin = getPinMarker(Object.values(coordinates), getPinIcon('/img/pin.svg', Adv));
   } catch (err) {
     throw new Error(`${ErrorMessages.PIN_ERROR}\n${err.name} ${err.message}`);
   }
+
+  return pin;
 };
 
 const onDraggablePin = (decimals = [COORDINATES_DECIMAL, COORDINATES_DECIMAL]) => {
