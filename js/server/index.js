@@ -16,4 +16,4 @@ const getDataAdvertisements = async (onSuccess, onFail) => {
 };
 
 export {getDataAdvertisements};
-export {renderErrorMessage} from './error.js';
+export {renderErrorAlert} from './error.js';

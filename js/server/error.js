@@ -1,4 +1,4 @@
-const ErrorBlock = {
+const ErrorBlockTemplate = {
   'CLASS_WRAPPER': 'api-error-container',
   'WRAPPER_STYLE': {
     position: 'sticky',
@@ -19,38 +19,41 @@ const ErrorBlock = {
     'background-color': '#E52B50',
   },
   'CLASS_MESSAGE': 'api-error-message',
-  MESSAGE: 'Произошла ошибка! Загрузка данных для карты прервалась! Попробуйте перезагрузить страницу!',
   'DELETE_MESSAGE_TIMER': 15000, // * 15sec
 };
 
-const renderErrorMessage = (container) => {
-  const errorWrapper = document.createElement('div');
-  errorWrapper.className = ErrorBlock.CLASS_WRAPPER;
-  errorWrapper.style.cssText = `
-    position: ${ErrorBlock.WRAPPER_STYLE.position};
-    top: ${ErrorBlock.WRAPPER_STYLE.top};
-    left: ${ErrorBlock.WRAPPER_STYLE.left};
-    z-index: ${ErrorBlock.WRAPPER_STYLE['z-index']};
+const getAlertStyles = (ErrorTemplate) => {
+  return `
+    position: ${ErrorTemplate.WRAPPER_STYLE.position};
+    top: ${ErrorTemplate.WRAPPER_STYLE.top};
+    left: ${ErrorTemplate.WRAPPER_STYLE.left};
+    z-index: ${ErrorTemplate.WRAPPER_STYLE['z-index']};
 
-    display: ${ErrorBlock.WRAPPER_STYLE.flex};
-    justify-content: ${ErrorBlock.WRAPPER_STYLE['justify-content']};
-    width: ${ErrorBlock.WRAPPER_STYLE.width};
-    min-height: ${ErrorBlock.WRAPPER_STYLE['min-height']};
-    padding: ${ErrorBlock.WRAPPER_STYLE.padding};
-    text-align: ${ErrorBlock.WRAPPER_STYLE['text-align']};
+    display: ${ErrorTemplate.WRAPPER_STYLE.flex};
+    justify-content: ${ErrorTemplate.WRAPPER_STYLE['justify-content']};
+    width: ${ErrorTemplate.WRAPPER_STYLE.width};
+    min-height: ${ErrorTemplate.WRAPPER_STYLE['min-height']};
+    padding: ${ErrorTemplate.WRAPPER_STYLE.padding};
+    text-align: ${ErrorTemplate.WRAPPER_STYLE['text-align']};
 
-    font-family: ${ErrorBlock.WRAPPER_STYLE['font-family']};
-    font-size: ${ErrorBlock.WRAPPER_STYLE['font-size']};
-    line-height: ${ErrorBlock.WRAPPER_STYLE['line-height']};
-    font-weight: ${ErrorBlock.WRAPPER_STYLE['font-weight']};
-    color: ${ErrorBlock.WRAPPER_STYLE.color};
+    font-family: ${ErrorTemplate.WRAPPER_STYLE['font-family']};
+    font-size: ${ErrorTemplate.WRAPPER_STYLE['font-size']};
+    line-height: ${ErrorTemplate.WRAPPER_STYLE['line-height']};
+    font-weight: ${ErrorTemplate.WRAPPER_STYLE['font-weight']};
+    color: ${ErrorTemplate.WRAPPER_STYLE.color};
 
-    background-color: ${ErrorBlock.WRAPPER_STYLE['background-color']};
+    background-color: ${ErrorTemplate.WRAPPER_STYLE['background-color']};
   `;
+};
+
+const renderErrorAlert = (container, message) => {
+  const errorWrapper = document.createElement('div');
+  errorWrapper.className = ErrorBlockTemplate.CLASS_WRAPPER;
+  errorWrapper.style.cssText = getAlertStyles(ErrorBlockTemplate);
 
   const errorMessage = document.createElement('p');
-  errorMessage.className = ErrorBlock.CLASS_MESSAGE;
-  errorMessage.textContent = ErrorBlock.MESSAGE;
+  errorMessage.className = ErrorBlockTemplate.CLASS_MESSAGE;
+  errorMessage.textContent = message;
 
   errorWrapper.appendChild(errorMessage);
   container.insertAdjacentElement('beforebegin', errorWrapper);
@@ -59,7 +62,7 @@ const renderErrorMessage = (container) => {
 
   setTimeout(() => {
     container.parentElement.removeChild(errorWrapper);
-  }, ErrorBlock.DELETE_MESSAGE_TIMER);
+  }, ErrorBlockTemplate.DELETE_MESSAGE_TIMER);
 }
 
-export {renderErrorMessage}
+export {renderErrorAlert}
