@@ -3,8 +3,11 @@ import {renderErrorAlert} from '/js/render-page/index.js'
 import {getRandomArrayInterval} from '/js/util.js';
 
 const SIMILAR_ADVERTISEMENTS_COUNT = 10;
-const ERROR_MESSAGE = 'Произошла ошибка! Загрузка данных для карты прервалась!\n' +
-  'Попробуйте перезагрузить страницу!';
+const ERROR_MESSAGE = [
+  'Произошла ошибка!',
+  'Загрузка данных для карты прервалась! Вы все еще можете отправить нам ваше объявление!',
+  'Для решения проблемы, попробуйте перезагрузить страницу!',
+];
 
 const renderData = async (map, renderAdvertisements) => {
   await getDataAdvertisements((advertisements) => {

@@ -1,6 +1,7 @@
 import {getMapCanvas, getMapTile, getPin, onDraggablePin} from './map.js';
 import {getNewCard} from './popup-card.js';
 import {Forms, Mode, renderErrorAlert, renderUI} from '/js/render-page/index.js';
+import {getErrorStrings} from '/js/util.js';
 
 const Coordinates = {
   Tokyo: {
@@ -51,7 +52,7 @@ const AlertMessages = {
   MAIN_PIN: 'Форма для заполнения объявления неактивна, но вы можете выбрать отель для заселения.',
   ADV_PIN: 'Форма фильтров карты отключена и невозможно выбрать отель, ' +
     'но вы можете заполнить собственное объявления для продажи',
-  TIP: 'Для решения проблемы, Вы можете попробовать перезагрузить страницу!',
+  SOLUTION: 'Для решения проблемы, Вы можете попробовать перезагрузить страницу!',
 };
 
 const renderMainPin = (map) => {
@@ -63,8 +64,11 @@ const renderMainPin = (map) => {
     mainPinMarker.on('moveend', onDraggablePin([Lat.DECIMAL, Lng.DECIMAL]));
   } catch (err) {
     const [advForm] = Object.values(Forms);
+    const errorStrings = getErrorStrings(AlertMessages.MAIN_PIN, AlertMessages);
+
     renderUI(Mode.INACTIVE, [advForm]);
-    renderErrorAlert(`${AlertMessages.ALERT} ${AlertMessages.MAIN_PIN} ${AlertMessages.TIP}`);
+    renderErrorAlert(errorStrings);
+
     throw new Error(`${ErrorMessages.MAIN_PIN_ERROR}\n${err.name} ${err.message}`);
   }
 };
@@ -84,8 +88,11 @@ const renderAdvertisements = (map, data) => {
     });
   } catch (err) {
     const [, mapFilters] = Object.values(Forms);
+    const errorStrings = getErrorStrings(AlertMessages.ADV_PIN, AlertMessages);
+
     renderUI(Mode.INACTIVE, [mapFilters]);
-    renderErrorAlert(`${AlertMessages.ALERT} ${AlertMessages.ADV_PIN} ${AlertMessages.TIP}`);
+    renderErrorAlert(errorStrings);
+
     throw new Error(`${ErrorMessages.ADV_PIN_ERROR}\n${err.name} ${err.message}`);
   }
 };
@@ -98,8 +105,11 @@ const renderMap = () => {
     const mapTile = getMapTile();
     mapTile.addTo(map);
   } catch (err) {
+    const errorStrings = getErrorStrings(AlertMessages.MAP, AlertMessages);
+
     renderUI(Mode.INACTIVE, Forms);
-    renderErrorAlert(`${AlertMessages.ALERT} ${AlertMessages.MAP} ${AlertMessages.TIP}`);
+    renderErrorAlert(errorStrings);
+
     throw new Error(`${ErrorMessages.MAP_ERROR}\n${err.name} ${err.message}`);
   }
 

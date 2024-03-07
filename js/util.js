@@ -101,6 +101,14 @@ const getRandomArrayInterval = (array, maxCount) => {
   return array.slice(randomIndex, randomIndex + maxCount);
 };
 
+const getErrorStrings = (mainString, template) => {
+  const [alert, solution] = Object.keys(template)
+    .map((element) => element === 'ALERT' || element === 'SOLUTION' ? template[element] : null)
+    .filter((element) => !!element);
+
+  return [`${alert}`, `${mainString}`, `${solution}`];
+};
+
 // ? Preparation for a script for sending messages to the api
 // const getFormatUserTitleInput = (inputTarget) => {
 //   return inputTarget.value = inputTarget.value.replace(/ +/g, ' ').trim();
@@ -119,5 +127,6 @@ export {
   getIndexNumeralDeclination,
   getArrayElementsToLowerCase,
   sortCollection,
-  getRandomArrayInterval
+  getRandomArrayInterval,
+  getErrorStrings
 };
