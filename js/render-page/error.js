@@ -1,6 +1,6 @@
 const ErrorWrapperTemplate = {
   CLASS: 'api-error-container',
-  STYLES: {
+  Styles: {
     position: 'sticky',
     top: 0,
     left: 0,
@@ -12,62 +12,82 @@ const ErrorWrapperTemplate = {
     padding: `${15}px ${30}px`,
     'text-align': 'center',
     'font-family': '"Roboto", "Arial", sans-serif',
-    'font-size': `${30}px`,
-    'line-height': `${30}px`,
-    'font-weight': 700,
+    'font-size': `${28}px`,
+    'line-height': 'normal',
+    'font-weight': 500,
     color: 'black',
     'background-color': '#E52B50',
   },
 };
 
-const MESSAGE_CLASS = 'api-error-message';
+const ErrorMessageTemplate = {
+  CLASS: 'api-error-message',
+  HEADER_CLASS: 'api-error-message_header',
+  HeaderStyles: {
+    'font-size': `${2}em`,
+    'font-weight': 900,
+  },
+};
+
 const DELETE_MESSAGE_TIMER = 15000; // * 15sec
 
-const getAlertStyles = (WrapperTemplate) => {
+const getAlertWrapperStyles = (WrapperStylesTemplate) => {
   return `
-    position: ${WrapperTemplate.WRAPPER_STYLE.position};
-    top: ${WrapperTemplate.WRAPPER_STYLE.top};
-    left: ${WrapperTemplate.WRAPPER_STYLE.left};
-    z-index: ${WrapperTemplate.WRAPPER_STYLE['z-index']};
+    position: ${WrapperStylesTemplate.position};
+    top: ${WrapperStylesTemplate.top};
+    left: ${WrapperStylesTemplate.left};
+    z-index: ${WrapperStylesTemplate['z-index']};
 
-    display: ${WrapperTemplate.WRAPPER_STYLE.flex};
-    justify-content: ${WrapperTemplate.WRAPPER_STYLE['justify-content']};
-    width: ${WrapperTemplate.WRAPPER_STYLE.width};
-    min-height: ${WrapperTemplate.WRAPPER_STYLE['min-height']};
-    padding: ${WrapperTemplate.WRAPPER_STYLE.padding};
-    text-align: ${WrapperTemplate.WRAPPER_STYLE['text-align']};
+    display: ${WrapperStylesTemplate.flex};
+    justify-content: ${WrapperStylesTemplate['justify-content']};
+    width: ${WrapperStylesTemplate.width};
+    min-height: ${WrapperStylesTemplate['min-height']};
+    padding: ${WrapperStylesTemplate.padding};
+    text-align: ${WrapperStylesTemplate['text-align']};
 
-    font-family: ${WrapperTemplate.WRAPPER_STYLE['font-family']};
-    font-size: ${WrapperTemplate.WRAPPER_STYLE['font-size']};
-    line-height: ${WrapperTemplate.WRAPPER_STYLE['line-height']};
-    font-weight: ${WrapperTemplate.WRAPPER_STYLE['font-weight']};
-    color: ${WrapperTemplate.WRAPPER_STYLE.color};
+    font-family: ${WrapperStylesTemplate['font-family']};
+    font-size: ${WrapperStylesTemplate['font-size']};
+    line-height: ${WrapperStylesTemplate['line-height']};
+    font-weight: ${WrapperStylesTemplate['font-weight']};
+    color: ${WrapperStylesTemplate.color};
 
-    background-color: ${WrapperTemplate.WRAPPER_STYLE['background-color']};
+    background-color: ${WrapperStylesTemplate['background-color']};
   `;
 };
 
-const getMessageWrapper = (template) => {
+const getAlertHeaderStyles = (AlertHeaderTemplate) => {
+  return `
+    'font-size': ${AlertHeaderTemplate['font-size']};
+    'font-weight': ${AlertHeaderTemplate['font-weight']};
+  `
+};
+
+const getMessageWrapper = (Template) => {
+  const {CLASS, Styles} = Template;
   const wrapper = document.createElement('div');
-  wrapper.className = template.CLASS;
-  wrapper.style.cssText = getAlertStyles(template);
+  wrapper.className = CLASS;
+  wrapper.style.cssText = getAlertWrapperStyles(Styles);
 
   return wrapper;
 }
 
-const getMessage = (message, blockClass) => {
+// TODO Доделать перебор сообщения, чтобы создавалось 3 отдельных параграфа в контейнере
+
+const getMessage = (messages, Template) => {
+  const {CLASS, HEADER_CLASS, HeaderStyles} = Template;
   const paragraph = document.createElement('p');
-  paragraph.className = blockClass;
-  paragraph.textContent = message;
+  paragraph.className = CLASS;
+  paragraph.style.cssText = getAlertHeaderStyles(HeaderStyles)
+  paragraph.textContent = messages;
 
   return paragraph;
 };
 
-const renderErrorAlert = (message) => {
+const renderErrorAlert = (messages) => {
   const container = document.querySelector('body');
 
   const errorWrapper = getMessageWrapper(ErrorWrapperTemplate);
-  const errorMessage = getMessage(message, MESSAGE_CLASS);
+  const errorMessage = getMessage(messages, ErrorMessageTemplate);
 
   errorWrapper.appendChild(errorMessage);
   container.insertAdjacentElement('afterbegin', errorWrapper);
