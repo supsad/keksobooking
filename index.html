@@ -110,8 +110,8 @@
       </fieldset>
       <fieldset class="ad-form__element ad-form__element--wide">
         <label class="ad-form__label" for="title">Заголовок объявления</label>
-        <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио" required
-               minlength="30" maxlength="100">
+        <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио"
+               minlength="30" maxlength="100" required>
       </fieldset>
       <fieldset class="ad-form__element ad-form__element--wide">
         <label class="ad-form__label" for="address">Адрес (координаты)</label>
@@ -129,7 +129,7 @@
       </fieldset>
       <fieldset class="ad-form__element">
         <label class="ad-form__label" for="price">Цена за ночь, руб.</label>
-        <input id="price" name="price" type="number" placeholder="5000" required min="0" max="1000000">
+        <input id="price" name="price" type="number" placeholder="5000" min="0" max="1000000" required>
       </fieldset>
       <fieldset class="ad-form__element ad-form__element--time">
         <label class="ad-form__label" for="timein">Время заезда и выезда</label>
@@ -183,7 +183,7 @@
         <label class="feature feature--conditioner" for="feature-conditioner">Кондиционер</label>
       </fieldset>
       <fieldset class="ad-form__element ad-form__element--wide">
-        <label class="ad-form__label" for="description">Описание (не обязательно)</label>
+        <label class="ad-form__label" for="description">Описание (необязательно)</label>
         <textarea id="description" name="description"
                   placeholder="Здесь расскажите о том, какое ваше жилье замечательное и вообще"></textarea>
       </fieldset>
@@ -199,8 +199,7 @@
                      image/jpeg,
                      image/png,
                      image/svg+xml,
-                     image/webp"
-                   required>
+                     image/webp">
             <label for="images" class="ad-form__drop-zone">
               Загрузить
               <br>
