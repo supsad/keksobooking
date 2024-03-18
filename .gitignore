@@ -5,6 +5,7 @@ node_modules/
 *.sublime*
 npm-debug.log*
 *.http
+TODO.txt
 
 # Build
 build/
