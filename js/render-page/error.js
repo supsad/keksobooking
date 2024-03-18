@@ -95,9 +95,7 @@ const getMessage = (messages) => {
   return messageFragment;
 };
 
-const renderErrorAlert = (messages) => {
-  const container = document.querySelector('body');
-
+const renderErrorAlert = (container, messages) => {
   const errorWrapper = getMessageWrapper(ErrorWrapperTemplate);
   const errorMessage = getMessage(messages);
 

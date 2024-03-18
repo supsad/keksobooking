@@ -1,6 +1,4 @@
-import {getFormatStringCapacity} from './format-capacity.js';
-import {getFormatStringTime} from './format-time.js';
-import {getWarningMessage, WarningTemplates} from './warning-message.js';
+import {getFormatStringCapacity, getFormatStringTime} from './format-popup.js';
 import {clearElement} from '/js/util.js';
 
 const PRICE_SYMBOL = '₽';
@@ -43,15 +41,18 @@ const selectors = {
   photos: '.popup__photos',
 };
 
+const WarningTemplates = {
+  UNKNOWN: 'Неизвестно',
+  FAILED: 'Не удалось',
+  INFO_MESSAGE: 'Для получения дополнительной информации свяжитесь с владельцем.',
+};
+
 const cardTemplate = document.querySelector('#card').content;
 if (!cardTemplate) {
   throw new Error('Card template is missing in the markup.');
 }
 
 const card = cardTemplate.querySelector('.popup');
-if (!card) {
-  throw new Error('Popup card is missing in the markup');
-}
 
 const addCardFeatures = (list, features) => {
   return features.forEach((value) => {
@@ -78,14 +79,19 @@ const addCardPhotos = (container, photos) => {
 
 let capacityString, timeString;
 
+const getWarningMessage = (capacityString, timeString) => {
+  return capacityString.includes(WarningTemplates.UNKNOWN)
+  || capacityString.includes(WarningTemplates.FAILED)
+  || timeString.includes(WarningTemplates.UNKNOWN)
+  || capacityString.includes(WarningTemplates.UNKNOWN)
+    ? WarningTemplates.INFO_MESSAGE
+    : null;
+};
+
 const getWarningElement = (element) => {
   element.textContent = getWarningMessage(capacityString, timeString);
 
-  if (element.textContent === undefined || element.textContent === null || element.textContent === '') {
-    return element.remove();
-  }
-
-  return element.textContent;
+  return element.textContent ?? element.textContent === '' ? element.remove() : element.textContent;
 };
 
 const setCardElement = (element, property, advertisementKey) => {

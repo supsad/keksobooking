@@ -1,4 +1,5 @@
-import {Forms, Mode, renderUI} from '/js/render-page/index.js';
+import {address, Forms, setAddressInput} from '/js/form/index.js'
+import {Mode, renderUI} from '/js/render-page/index.js';
 
 const COORDINATES_DECIMAL = 5;
 
@@ -10,13 +11,10 @@ const ErrorMessages = {
   PIN_ERROR: 'Не удалось загрузить метки карты!',
 }
 
-const address = document.querySelector('#address');
+const onMapLoad = (coordinates) => {
+  renderUI(Mode.ACTIVE, Object.values(Forms));
 
-const onMapLoad = ([lat, lng]) => {
-  renderUI(Mode.ACTIVE, Forms);
-
-  address.readOnly = true;
-  address.value = `${lat}, ${lng}`;
+  setAddressInput(coordinates);
 };
 
 const getMapTile = () => {
@@ -38,7 +36,7 @@ const getMapCanvas = (coordinates, zoom) => {
     const [lat, lng] = Object.values(coordinates);
 
     return L.map('map-canvas')
-      .on('load', () => onMapLoad(Object.values(coordinates)))
+      .on('load', () => onMapLoad([lat, lng]))
       .setView({
         lat: lat,
         lng: lng,

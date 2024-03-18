@@ -1,30 +1,46 @@
-import {sortCollection} from '/js/util.js';
+import {address, housePriceInput, houseTypeSelect, onValidCapacity} from './index.js';
+import {fillTargetChangeableListsMap, sortCollection} from '/js/util.js';
 
-const fillTargetChangeableListsMap = (targetList) => {
-  const targetOptions = targetList.options;
-  const map = {};
-
-  [...targetOptions].forEach((option) => {
-    const optionValue = option.value;
-
-    if (optionValue === '100') {
-      return map[optionValue] = ['0'];
-    }
-
-    map[optionValue] = Array.from({length: optionValue}, (_, i) => String(i + 1));
-  });
-
-  return map;
+const TypeMinPrices = {
+  BUNGALOW: 0,
+  FLAT: 1000,
+  HOTEL: 3000,
+  HOUSE: 5000,
+  PALACE: 10000,
 };
 
-const isCapacityOptionInvalid = (capacity, roomValue, map) => {
-  let isDisabled = true;
+const Price = {
+  MIN: 0,
+  MAX: 1000000,
+  REQUIRED: true,
+};
 
-  for (let option of capacity.selectedOptions) {
-    return isDisabled = !!option.disabled;
+const setAddressInput = ([lat, lng]) => {
+  address.readOnly = true;
+  address.value = `${lat}, ${lng}`;
+};
+
+const setPriceInputAttr = () => {
+  housePriceInput.min  ??= Price.MIN;
+  housePriceInput.max ??= Price.MAX;
+  housePriceInput.required ??= Price.REQUIRED;
+};
+
+const houseSyncPrice = () => {
+  const bungalowKey = Object.keys(TypeMinPrices).find((key) => key === 'BUNGALOW');
+
+  let selectedType = houseTypeSelect.options[houseTypeSelect.selectedIndex].value.toUpperCase();
+
+  // * 0 is not displayed, so it is converted to text
+  if (selectedType === bungalowKey) {
+    TypeMinPrices[bungalowKey] = TypeMinPrices[bungalowKey].toString();
   }
 
-  return isDisabled && !map[roomValue].includes(capacity.value);
+  if (TypeMinPrices[selectedType]) {
+    let priceValue = TypeMinPrices[selectedType];
+    housePriceInput.min = priceValue;
+    housePriceInput.placeholder = priceValue;
+  }
 };
 
 const syncRoomsCapacityHandler = (roomNumber, capacity) => {
@@ -41,13 +57,7 @@ const syncRoomsCapacityHandler = (roomNumber, capacity) => {
     option.disabled = !roomCapacityMap[roomsValue].includes(option.value);
   });
 
-  if (isCapacityOptionInvalid(capacity, roomsValue, roomCapacityMap)) {
-    capacity.setCustomValidity('Выбрана недоступная опция.');
-  } else {
-    capacity.setCustomValidity('');
-  }
-
-  capacity.reportValidity();
+  onValidCapacity(capacity, roomsValue, roomCapacityMap);
 };
 
-export {syncRoomsCapacityHandler};
+export {setPriceInputAttr, setAddressInput, houseSyncPrice, syncRoomsCapacityHandler};

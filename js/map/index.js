@@ -1,6 +1,7 @@
 import {getMapCanvas, getMapTile, getPin, onDraggablePin} from './map.js';
 import {getNewCard} from './popup-card.js';
-import {Forms, Mode, renderErrorAlert, renderUI} from '/js/render-page/index.js';
+import {Forms} from '/js/form/index.js';
+import {Mode, page, renderErrorAlert, renderUI} from '/js/render-page/index.js';
 import {getErrorStrings} from '/js/util.js';
 
 const Coordinates = {
@@ -62,12 +63,14 @@ const renderMainPin = (map) => {
 
     const [Lat, Lng] = Coordinates.MapArea;
     mainPinMarker.on('moveend', onDraggablePin([Lat.DECIMAL, Lng.DECIMAL]));
+
+    return mainPinMarker;
   } catch (err) {
     const [advForm] = Object.values(Forms);
     const errorStrings = getErrorStrings(AlertMessages.MAIN_PIN, AlertMessages);
 
     renderUI(Mode.INACTIVE, [advForm]);
-    renderErrorAlert(errorStrings);
+    renderErrorAlert(page, errorStrings);
 
     throw new Error(`${ErrorMessages.MAIN_PIN_ERROR}\n${err.name} ${err.message}`);
   }
@@ -91,7 +94,7 @@ const renderAdvertisements = (map, data) => {
     const errorStrings = getErrorStrings(AlertMessages.ADV_PIN, AlertMessages);
 
     renderUI(Mode.INACTIVE, [mapFilters]);
-    renderErrorAlert(errorStrings);
+    renderErrorAlert(page, errorStrings);
 
     throw new Error(`${ErrorMessages.ADV_PIN_ERROR}\n${err.name} ${err.message}`);
   }
@@ -108,7 +111,7 @@ const renderMap = () => {
     const errorStrings = getErrorStrings(AlertMessages.MAP, AlertMessages);
 
     renderUI(Mode.INACTIVE, Forms);
-    renderErrorAlert(errorStrings);
+    renderErrorAlert(page, errorStrings);
 
     throw new Error(`${ErrorMessages.MAP_ERROR}\n${err.name} ${err.message}`);
   }
@@ -116,4 +119,4 @@ const renderMap = () => {
   return map;
 };
 
-export {renderMap, renderMainPin, renderAdvertisements};
+export {Coordinates, renderMap, renderMainPin, renderAdvertisements};
