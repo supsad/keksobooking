@@ -91,6 +91,23 @@ const getIndexNumeralDeclination = (value) => {
   return indices[2];
 };
 
+const fillTargetChangeableListsMap = (targetList) => {
+  const targetOptions = targetList.options;
+  const map = {};
+
+  [...targetOptions].forEach((option) => {
+    const optionValue = option.value;
+
+    if (optionValue === '100') {
+      return map[optionValue] = ['0'];
+    }
+
+    map[optionValue] = Array.from({length: optionValue}, (_, i) => String(i + 1));
+  });
+
+  return map;
+};
+
 const getArrayElementsToLowerCase = (strings) => strings.map((element) => element.toLowerCase());
 
 const sortCollection = (collection) => collection
@@ -109,10 +126,13 @@ const getErrorStrings = (mainString, template) => {
   return [`${alert}`, `${mainString}`, `${solution}`];
 };
 
-// ? Preparation for a script for sending messages to the api
-// const getFormatUserTitleInput = (inputTarget) => {
-//   return inputTarget.value = inputTarget.value.replace(/ +/g, ' ').trim();
-// };
+const getFormatTitleValue = (inputTarget) => {
+  return inputTarget.value.replace(/ +/g, ' ').trim();
+};
+
+const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc' || evt.keyCode === 27;
+};
 
 export {
   getRandomInclusive,
@@ -125,8 +145,11 @@ export {
   syncOptionsHandler,
   disabledAttrHandler,
   getIndexNumeralDeclination,
+  fillTargetChangeableListsMap,
   getArrayElementsToLowerCase,
   sortCollection,
   getRandomArrayInterval,
-  getErrorStrings
+  getErrorStrings,
+  getFormatTitleValue,
+  isEscEvent
 };
