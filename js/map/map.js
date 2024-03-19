@@ -2,6 +2,7 @@ import {address, Forms, setAddressInput} from '/js/form/index.js'
 import {Mode, renderUI} from '/js/render-page/index.js';
 
 const COORDINATES_DECIMAL = 5;
+const MAP_LAYERS_ZINDEX = 1000;
 
 const ErrorMessages = {
   TILE_ERROR: 'Не удалось загрузить юридическое лицо, предоставляющее исходные данные карты!\n' +
@@ -107,4 +108,4 @@ const onDraggablePin = (decimals = [COORDINATES_DECIMAL, COORDINATES_DECIMAL]) =
   };
 };
 
-export {getMapTile, getMapCanvas, getPin, onDraggablePin}
+export {MAP_LAYERS_ZINDEX, getMapTile, getMapCanvas, getPin, onDraggablePin}

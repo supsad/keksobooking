@@ -120,3 +120,4 @@ const renderMap = () => {
 };
 
 export {Coordinates, renderMap, renderMainPin, renderAdvertisements};
+export {MAP_LAYERS_ZINDEX} from './map.js';
