@@ -1,49 +1,48 @@
 import {EventMethod, page} from './index.js';
 import {isEscEvent} from '/js/util.js';
-
-const MAP_LAYERS_ZINDEX = 1000;
+import {MAP_LAYERS_ZINDEX} from '/js/map/index.js';
 
 const successTemplate = document.querySelector('#success').content;
 const success = successTemplate.querySelector('.success');
 
 const updateModalEventListeners = (shouldAddEvent) => {
   const method = shouldAddEvent ? EventMethod.ADD : EventMethod.REMOVE;
-  document[method]('click', hideSuccessModalHandler, {once: true});
-  document[method]('keydown', hideSuccessModalHandler, {once: true});
+  document[method]('click', onCloseSuccessModal, {once: true});
+  document[method]('keydown', onCloseSuccessModal, {once: true});
 };
 
-const hideSuccessModal = (modal) => {
+const hideModal = (modal) => {
   modal.classList.add('visually-hidden');
   updateModalEventListeners(false);
 };
 
-const hideSuccessModalHandler = (evt) => {
+const onCloseSuccessModal = (evt) => {
   evt.preventDefault();
 
   const success = document.querySelector('#success-modal');
   switch (evt.type) {
     case 'click':
       if (page.contains(evt.target)) {
-        hideSuccessModal(success);
+        hideModal(success);
       }
       break;
 
     case 'keydown':
       if (isEscEvent(evt)) {
-        hideSuccessModal(success);
+        hideModal(success);
       }
       break;
   }
 };
 
-const successModalHandler = (modal) => {
+const modalHandler = (modal) => {
   modal.classList.remove('visually-hidden');
   updateModalEventListeners(true, modal);
 };
 
-const getSuccessMessage = () => {
-  const newSuccess = success.cloneNode(true);
-  newSuccess.id = 'success-modal';
+const getModalMessage = (modal, id) => {
+  const newSuccess = modal.cloneNode(true);
+  newSuccess.id = id;
 
   // * More than map layers
   newSuccess.style.zIndex = String(MAP_LAYERS_ZINDEX + 1);
@@ -52,9 +51,9 @@ const getSuccessMessage = () => {
 };
 
 const renderSuccessModal = (container) => {
-  const successModal = getSuccessMessage();
+  const successModal = getModalMessage(success, 'success-modal');
   container.insertAdjacentElement('beforeend', successModal);
-  successModalHandler(successModal);
+  modalHandler(successModal);
 };
 
 export {renderSuccessModal};
