@@ -57,4 +57,4 @@ export {page, EventMethod, renderUI, setSyncForm};
 export {Mode} from './render-page.js';
 export {renderData} from './data.js'
 export {renderErrorAlert} from './error.js';
-export {renderSuccessModal} from './modal.js';
+export {renderSuccessModal, renderErrorModal} from './modal.js';
