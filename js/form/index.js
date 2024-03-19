@@ -1,15 +1,8 @@
 import {syncRoomsCapacityHandler} from './input-sync.js';
 import {sendUserAnnouncementData} from '/js/api.js';
-import {page, renderErrorAlert} from '/js/render-page/index.js';
 import {getFormatTitleValue, syncOptionsHandler} from '/js/util.js';
 
 const INVALID_FOCUS = `${2}px solid #E52B50`;
-
-const ERROR_MESSAGE = [
-  'Упс! Что-то пошло не так!',
-  'Не удалось отправить ваше объявление!',
-  'Попробуйте перезагрузить страницу.',
-];
 
 const Forms = {
   form: document.querySelector('.ad-form'),
@@ -43,7 +36,7 @@ const onSync = (evt) => {
   }
 };
 
-const setUserFormSubmit = (onSuccess) => {
+const setUserFormSubmit = (onSuccess, onFail) => {
   Forms.form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
 
@@ -51,7 +44,7 @@ const setUserFormSubmit = (onSuccess) => {
     await sendUserAnnouncementData(
       new FormData(evt.target),
       () => onSuccess(),
-      () => renderErrorAlert(page, ERROR_MESSAGE),
+      () => onFail(),
     );
   });
 };

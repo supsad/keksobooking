@@ -1,7 +1,7 @@
 {
   "alert": [
     {
-      "name": "data",
+      "name": "get-data",
       "status": "reject",
       "type": "header",
       "string": "Упс! Что-то пошло не так!"
@@ -13,7 +13,7 @@
       "string": "Произошла ошибка!"
     },
     {
-      "name": "data",
+      "name": "get-data",
       "status": "reject",
       "type": "main",
       "string": "Загрузка данных для карты прервалась!"
@@ -54,6 +54,12 @@
       ],
       "type": "solution",
       "string": "Для решения проблемы, Вы можете попробовать перезагрузить страницу!"
+    },
+    {
+      "name": "send-data",
+      "status": "reject",
+      "type": "main",
+      "string": "Не удалось отправить ваше объявление!"
     }
   ],
   "console": {
